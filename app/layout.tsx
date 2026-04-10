@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import '../styles/globals.css';
+import '@/styles/globals.css';
 
-import { cn } from '@/lib/utils';
-
-import Providers from '@/components/providers';
+import Providers from '@/app/providers';
 import Sidebar from '@/components/sidebar';
+import { cn } from '@/lib/utils';
 
 const walsheimFont = localFont({
   src: [
@@ -62,23 +61,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang='en'>
-      <body
-        className={cn(walsheimFont.className, 'antialiased relative tracking')}
-      >
+    <html lang="en">
+      <body className={cn(walsheimFont.className, 'antialiased relative tracking')}>
         <Providers>
-          <div className='absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]' />
+          <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]" />
 
-          <div className='max-w-7xl min-h-screen mx-auto flex relative'>
+          <div className="max-w-7xl min-h-screen mx-auto flex relative">
             <Sidebar />
 
-            <main className='grow overflow-hidden px-6'>{children}</main>
+            <main className="grow overflow-hidden px-6">{children}</main>
           </div>
         </Providers>
       </body>
