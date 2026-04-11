@@ -1,46 +1,34 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-
-import '@/styles/globals.css';
-
-import Providers from '@/app/providers';
-import Sidebar from '@/components/sidebar';
+import { Geist, Geist_Mono } from 'next/font/google';
+import { Providers } from '@/app/providers';
+import { FlickeringGrid } from '@/components/flickering-grid';
+import { Navbar } from '@/components/navbar';
+import { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 
-const walsheimFont = localFont({
-  src: [
-    {
-      path: '../public/fonts/Walsheim-Light.woff2',
-      weight: '400',
-    },
-    {
-      path: '../public/fonts/Walsheim-Regular.woff2',
-      weight: '500',
-    },
-    {
-      path: '../public/fonts/Walsheim-Medium.woff2',
-      weight: '600',
-    },
-    {
-      path: '../public/fonts/Walsheim-Bold.woff2',
-      weight: '700',
-    },
-  ],
-  preload: true,
+import './globals.css';
+
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700'],
+});
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-mono',
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://rizkianakbar.com'),
-  title: {
-    default: 'Rizkian Akbar',
-    template: '%s | Rizkian Akbar',
-  },
-  description: 'Software Engineer, Web3 and Blockchain Enthusiast',
+  metadataBase: new URL(resumeData.url),
+  title: { default: resumeData.name, template: `%s | ${resumeData.name}` },
+  description: resumeData.description,
   openGraph: {
-    title: 'Rizkian Akbar',
-    description: 'Software Engineer, Web3 and Blockchain Enthusiast',
-    url: 'https://rizkianakbar.com',
-    siteName: 'Rizkian Akbar',
+    title: `${resumeData.name}`,
+    description: resumeData.description,
+    url: resumeData.url,
+    siteName: `${resumeData.name}`,
     locale: 'en_US',
     type: 'website',
   },
@@ -55,24 +43,32 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  twitter: {
-    title: 'Rizkian Akbar',
-    card: 'summary_large_image',
-  },
+  twitter: { title: `${resumeData.name}`, card: 'summary_large_image' },
+  verification: { google: '', yandex: '' },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={cn(walsheimFont.className, 'antialiased relative tracking')}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn('min-h-screen bg-background font-sans antialiased relative', geist.variable, geistMono.variable)}
+        cz-shortcut-listen="true">
         <Providers>
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]" />
-
-          <div className="max-w-7xl min-h-screen mx-auto flex relative">
-            <Sidebar />
-
-            <main className="grow overflow-hidden px-6">{children}</main>
+          <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0">
+            <FlickeringGrid
+              className="h-full w-full"
+              squareSize={2}
+              gridGap={2}
+              style={{
+                maskImage: 'linear-gradient(to bottom, black, transparent)',
+                WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
+              }}
+            />
           </div>
+
+          <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">{children}</div>
+
+          <Navbar />
         </Providers>
       </body>
     </html>
