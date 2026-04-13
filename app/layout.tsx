@@ -7,6 +7,7 @@ import { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 
 import './globals.css';
+import Script from 'next/script';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -53,6 +54,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body
         className={cn('min-h-screen bg-background font-sans antialiased relative', geist.variable, geistMono.variable)}
         cz-shortcut-listen="true">
+        <Script defer src="https://cloud.umami.is/script.js" data-website-id="19f914e0-2aba-42c7-bdb9-d73147572d3d" />
+
         <Providers>
           <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0">
             <FlickeringGrid
