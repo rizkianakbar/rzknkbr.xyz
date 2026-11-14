@@ -1,28 +1,27 @@
-import type { JSX } from 'react';
-import { ContactSection } from '@/components/section/contact-section';
-import { EducationSection } from '@/components/section/education-section';
-import { GithubActivitySection } from '@/components/section/github-activity-section';
-import { HeroSection } from '@/components/section/hero-section';
-import { ProjectsSection } from '@/components/section/projects-section';
-import { SkillsSection } from '@/components/section/skills-section';
-import { StorySection } from '@/components/section/story-section';
-import { TrophySection } from '@/components/section/trophy-section';
-import { WorkSection } from '@/components/section/work-section';
+import { Contact } from '@/features/contact/contact';
+import { Education } from '@/features/education/education';
+import { Github } from '@/features/github/github';
+import { Hero } from '@/features/hero/hero';
+import { Loot } from '@/features/loot/loot';
+import { Quests } from '@/features/quests/quests';
+import { Skills } from '@/features/skills/skills';
+import { Story } from '@/features/story/story';
+import { Trophies } from '@/features/trophies/trophies';
 
-export default function HomePage(): JSX.Element {
+export default function HomePage() {
   return (
     <main className="flex flex-col gap-28 sm:gap-36">
-      <HeroSection />
-      <TrophySection />
-      <StorySection />
-      <GithubActivitySection />
+      <Hero />
+      <Trophies />
+      <Story />
+      <Github />
       <div className="flex flex-col gap-12">
-        <WorkSection />
-        <EducationSection />
+        <Quests />
+        <Education />
       </div>
-      <ProjectsSection />
-      <SkillsSection />
-      <ContactSection />
+      <Loot />
+      <Skills />
+      <Contact />
     </main>
   );
 }

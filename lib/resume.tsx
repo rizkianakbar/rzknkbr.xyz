@@ -37,6 +37,7 @@ export const resumeData = {
   ],
   avatarUrl: '/me.png',
   cvUrl: '/Rizkian_Akbar_Resume.pdf',
+  githubUsername: 'rizkianakbar',
 
   /** Player-card stats, out of 100. Pure vibes, lovingly calibrated. */
   stats: [
@@ -325,7 +326,6 @@ export const resumeData = {
       description:
         'Award-winning podcast platform: WAN-IFRA Digital Media Awards Asia 2024, Best Innovative Digital Product. Embeddable player, RSS distribution and an internal analytics platform.',
       technologies: ['Next.js', 'TypeScript', 'tRPC', 'Zustand', 'Go', 'MariaDB'],
-      image: '',
       video: '/kbr.mp4',
     },
     {
@@ -336,7 +336,6 @@ export const resumeData = {
       description:
         'Where 300 Web3 communities ran 703 gamified campaigns. Multi-step task flows, a Gemini analytics chatbot, and billing on Stripe and on-chain stablecoins.',
       technologies: ['Next.js', 'tRPC', 'Supabase', 'Solidity', 'Viem', 'Wagmi', 'Privy'],
-      image: '',
       video: '/stiqy-admin.mp4',
     },
     {
@@ -346,7 +345,6 @@ export const resumeData = {
       rarity: 'epic' as Rarity,
       description: 'National news site reaching up to 800,000 visitors a month. Built and run as the sole engineer.',
       technologies: ['Next.js', 'TypeScript', 'TailwindCSS', 'Go', 'MariaDB'],
-      image: '',
       video: '/kbr.mp4',
     },
     {
@@ -356,7 +354,6 @@ export const resumeData = {
       rarity: 'epic' as Rarity,
       description: 'A 4,983-NFT collection on Base with on-chain gameplay, minting and a full gallery.',
       technologies: ['Solidity', 'Hardhat', 'Viem', 'Wagmi', 'Next.js'],
-      image: '',
       video: '/bumpies.mp4',
     },
     {
@@ -367,7 +364,6 @@ export const resumeData = {
       description:
         'The player side of Stiqy: discover communities, join campaigns and complete on-chain and social quests for rewards.',
       technologies: ['Next.js', 'tRPC', 'Supabase', 'Wagmi', 'Privy'],
-      image: '',
       video: '/stiqy-app.mp4',
     },
     {
@@ -377,7 +373,6 @@ export const resumeData = {
       rarity: 'rare' as Rarity,
       description: 'Landing page for Stiqy: features, pricing and onboarding for business clients.',
       technologies: ['Next.js', 'TypeScript', 'TailwindCSS'],
-      image: '',
       video: '/stiqy.mp4',
     },
   ],
@@ -410,6 +405,7 @@ export const resumeData = {
       href: 'https://clinic.rzknkbr.xyz',
       repo: 'https://github.com/rizkianakbar/eClinic',
       image: '',
+      caption: 'Front desk → Exam → Pharmacy → Cashier',
       emoji: '🩺',
       description:
         'Registration, queues, medical records, pharmacy stock by batch and expiry, cashier with QRIS and owner reports. Multi-tenant with row-level security.',

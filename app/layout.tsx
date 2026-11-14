@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono, Silkscreen } from 'next/font/google';
 import Script from 'next/script';
 import { Providers } from '@/app/providers';
-import { GameLayer } from '@/components/game/game-layer';
-import { Navbar } from '@/components/navbar';
+import { Game } from '@/features/game/game';
+import { Navbar } from '@/features/navbar/navbar';
 import { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 
@@ -61,7 +61,11 @@ export const viewport: Viewport = {
 /** Runs before paint so visitors who already pressed start this session never see the start screen flash. */
 const SKIP_START = `try{if(sessionStorage.getItem('rzk-started'))document.documentElement.dataset.started='1'}catch(e){}`;
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+type RootLayoutProps = {
+  children: React.ReactNode;
+};
+
+export default function RootLayout(props: RootLayoutProps) {
   return (
     <html lang="en" className="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
       <head>
@@ -85,8 +89,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Script defer src="https://cloud.umami.is/script.js" data-website-id="19f914e0-2aba-42c7-bdb9-d73147572d3d" />
 
         <Providers>
-          <GameLayer />
-          <div className="relative z-10 pt-24 pb-32 sm:pt-28">{children}</div>
+          <Game />
+          <div className="relative z-10 pt-24 pb-32 sm:pt-28">{props.children}</div>
           <Navbar />
         </Providers>
       </body>

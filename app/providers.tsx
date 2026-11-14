@@ -1,13 +1,17 @@
 'use client';
 
-import { GameProvider } from '@/components/game/game-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { GameProvider } from '@/features/game/game-provider';
 
-export function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
+type ProvidersProps = {
+  children: React.ReactNode;
+};
+
+export function Providers(props: ProvidersProps) {
   return (
     <GameProvider>
       <TooltipProvider delayDuration={0} skipDelayDuration={0} disableHoverableContent>
-        {children}
+        {props.children}
       </TooltipProvider>
     </GameProvider>
   );

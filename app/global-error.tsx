@@ -1,10 +1,13 @@
 'use client';
 
-import type { JSX } from 'react';
-
 import { Button } from '@/components/ui/button';
 
-export default function GlobalErrorPage({ error }: { error: Error & { digest?: string } }): JSX.Element {
+type GlobalErrorPageProps = {
+  error: Error & { digest?: string };
+};
+
+export default function GlobalErrorPage(props: GlobalErrorPageProps) {
+  const { error } = props;
   console.error(error);
 
   return (
