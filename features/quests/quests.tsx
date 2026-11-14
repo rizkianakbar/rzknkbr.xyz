@@ -30,7 +30,7 @@ export function Quests() {
       <div className="relative mt-10">
         <div
           aria-hidden
-          className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-linear-to-b from-game-accent via-game-violet to-transparent"
+          className="absolute left-4.75 top-4 bottom-4 w-0.5 bg-linear-to-b from-game-accent via-game-violet to-transparent"
         />
         <ol className="flex flex-col gap-4">
           {resumeData.work.map((work, i) => (

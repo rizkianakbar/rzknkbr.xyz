@@ -34,7 +34,7 @@ export function LootQuestPoster(props: LootQuestPosterProps) {
     // The wrapper owns the hover and never moves, so the poster can straighten up and rise without
     // slipping out from under the cursor and flickering at its edge.
     <div className="group/poster h-full" style={{ '--poster-tilt': `${tilt}deg` } as React.CSSProperties}>
-      <article className="relative h-full rounded-2xl border-2 border-border bg-card p-4 pt-6 shadow-xl shadow-black/30 transition-[rotate,translate,border-color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/poster:border-game-cyan/50 motion-safe:[rotate:var(--poster-tilt)] motion-safe:group-hover/poster:[rotate:0deg] motion-safe:group-hover/poster:-translate-y-1.5">
+      <article className="relative h-full rounded-2xl border-2 border-border bg-card p-4 pt-6 shadow-xl shadow-black/30 transition-[rotate,translate,border-color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/poster:border-game-cyan/50 motion-safe:rotate-(--poster-tilt) motion-safe:group-hover/poster:rotate-0 motion-safe:group-hover/poster:-translate-y-1.5">
         {/* Pin */}
         <span
           aria-hidden
@@ -47,7 +47,7 @@ export function LootQuestPoster(props: LootQuestPosterProps) {
           <span className={cn('rounded-md px-1.5 py-0.5', status.className)}>{status.label}</span>
         </div>
 
-        <div className="relative mt-3 aspect-[16/9] overflow-hidden rounded-xl border-2 border-border bg-linear-to-br from-game-cyan/20 via-game-violet/15 to-game-pink/20">
+        <div className="relative mt-3 aspect-video overflow-hidden rounded-xl border-2 border-border bg-linear-to-br from-game-cyan/20 via-game-violet/15 to-game-pink/20">
           {quest.image ? (
             <Image
               src={quest.image}

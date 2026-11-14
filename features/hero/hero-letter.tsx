@@ -47,7 +47,7 @@ export function HeroLetter(props: HeroLetterProps) {
       onPointerEnter={(e) => e.pointerType === 'mouse' && playNote(index + 2, 'sine')}
       onPointerDown={poke}>
       <span
-        className="inline-block transition-[translate,rotate] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-safe:group-hover/letter:-translate-y-4 motion-safe:group-hover/letter:[rotate:var(--hover-tilt)]"
+        className="inline-block transition-[translate,rotate] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-safe:group-hover/letter:-translate-y-4 motion-safe:group-hover/letter:rotate-(--hover-tilt)"
         style={{ '--hover-tilt': `${tilt / 2}deg` } as React.CSSProperties}>
         <span
           ref={scope}

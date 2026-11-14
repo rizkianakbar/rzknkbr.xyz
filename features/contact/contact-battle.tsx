@@ -151,13 +151,13 @@ export function ContactBattle() {
   const defeated = battle.hp === 0;
 
   return (
-    <div className="relative overflow-hidden rounded-[2rem] border-2 border-game-pink/40 bg-card shadow-[0_0_60px_-24px_var(--game-pink)]">
+    <div className="relative overflow-hidden rounded-4xl border-2 border-game-pink/40 bg-card shadow-[0_0_60px_-24px_var(--game-pink)]">
       {/* Arena */}
       <div className="crt relative h-72 overflow-hidden bg-[radial-gradient(ellipse_at_50%_100%,color-mix(in_oklab,var(--game-violet)_30%,transparent),transparent_65%)] sm:h-80">
         {/* Floor grid */}
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(transparent_95%,color-mix(in_oklab,var(--game-pink)_35%,transparent)_95%),linear-gradient(90deg,transparent_95%,color-mix(in_oklab,var(--game-pink)_35%,transparent)_95%)] bg-[length:28px_28px] opacity-40 [mask-image:linear-gradient(to_bottom,transparent,black)]"
+          className="absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(transparent_95%,color-mix(in_oklab,var(--game-pink)_35%,transparent)_95%),linear-gradient(90deg,transparent_95%,color-mix(in_oklab,var(--game-pink)_35%,transparent)_95%)] bg-size-[28px_28px] opacity-40 mask-[linear-gradient(to_bottom,transparent,black)]"
         />
 
         <AnimatePresence mode="wait">
@@ -187,7 +187,7 @@ export function ContactBattle() {
                     {/* Segment ticks, like a game health bar */}
                     <div
                       aria-hidden
-                      className="absolute inset-0 bg-[linear-gradient(90deg,transparent_calc(100%-2px),rgb(0_0_0/0.45)_calc(100%-2px))] bg-[length:10%_100%]"
+                      className="absolute inset-0 bg-[linear-gradient(90deg,transparent_calc(100%-2px),rgb(0_0_0/0.45)_calc(100%-2px))] bg-size-[10%_100%]"
                     />
                   </div>
                   <span className="w-14 text-right font-pixel text-[9px] tabular-nums">

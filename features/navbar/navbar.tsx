@@ -88,7 +88,7 @@ function NavbarItem(props: NavbarItemProps) {
         aria-hidden
         className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-3 whitespace-nowrap rounded-lg border-2 border-game-accent bg-card px-2 py-1 font-pixel text-[10px] uppercase tracking-wider text-foreground opacity-0 translate-y-1 transition-[opacity,translate] duration-150 group-hover/slot:opacity-100 group-hover/slot:translate-y-0 group-focus-visible/slot:opacity-100 group-focus-visible/slot:translate-y-0">
         {label}
-        <span className="absolute left-1/2 top-full -translate-x-1/2 -mt-[5px] size-2 rotate-45 border-r-2 border-b-2 border-game-accent bg-card" />
+        <span className="absolute left-1/2 top-full -translate-x-1/2 -mt-1.25 size-2 rotate-45 border-r-2 border-b-2 border-game-accent bg-card" />
       </span>
     </a>
   );

@@ -158,7 +158,7 @@ function CoachMark(props: CoachMarkProps) {
       className="pointer-events-auto absolute left-0 top-full mt-3 w-[min(22rem,calc(100vw-1.5rem))] rounded-2xl border-2 border-game-accent bg-card/95 backdrop-blur-xl p-4 shadow-2xl">
       <span
         aria-hidden
-        className="absolute -top-[9px] left-8 size-4 rotate-45 border-l-2 border-t-2 border-game-accent bg-card"
+        className="absolute -top-2.25 left-8 size-4 rotate-45 border-l-2 border-t-2 border-game-accent bg-card"
       />
       <p className="font-pixel text-[10px] uppercase tracking-widest text-game-accent-text">How to play</p>
       <p className="mt-2 text-sm leading-relaxed">

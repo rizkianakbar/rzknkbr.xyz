@@ -53,7 +53,7 @@ export function Tilt(props: TiltProps) {
         light.set(0);
       }}>
       <motion.div
-        className="relative h-full rounded-[inherit] [transform-style:preserve-3d]"
+        className="relative h-full rounded-[inherit] transform-3d"
         style={{ rotateX, rotateY, transformPerspective: 900 }}>
         {children}
         {/* Faint inner wash, then a bright 2px ring lit only near the cursor (masked to the border). */}

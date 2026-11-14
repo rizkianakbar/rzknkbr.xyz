@@ -12,7 +12,7 @@ type HeroPlayerCardProps = {
   show: boolean;
 };
 
-const FACE = 'absolute inset-0 rounded-[28px] p-[3px] [backface-visibility:hidden]';
+const FACE = 'absolute inset-0 rounded-[28px] p-0.75 backface-hidden';
 const FLIP_HINT = 'text-center font-pixel text-[8px] uppercase tracking-widest text-muted-foreground';
 
 /** Holographic trading card: stats on the front, special moves on the back. */
@@ -38,7 +38,7 @@ export function HeroPlayerCard(props: HeroPlayerCardProps) {
         aria-pressed={flipped}
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 160, damping: 18 }}
-        className="relative block w-full aspect-[3/4.2] text-left [transform-style:preserve-3d] cursor-pointer rounded-[28px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-game-accent/60">
+        className="relative block w-full aspect-[3/4.2] text-left transform-3d cursor-pointer rounded-[28px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-game-accent/60">
         <div
           className={`${FACE} bg-linear-to-br from-game-accent via-game-cyan to-game-pink shadow-2xl shadow-game-accent/20`}>
           <div className="relative h-full w-full rounded-[25px] bg-card overflow-hidden flex flex-col">
@@ -84,7 +84,7 @@ export function HeroPlayerCard(props: HeroPlayerCardProps) {
         </div>
 
         <div
-          className={`${FACE} bg-linear-to-br from-game-pink via-game-violet to-game-amber [transform:rotateY(180deg)]`}>
+          className={`${FACE} bg-linear-to-br from-game-pink via-game-violet to-game-amber transform-[rotateY(180deg)]`}>
           <div className="h-full w-full rounded-[25px] bg-card p-5 flex flex-col gap-4">
             <p className="font-pixel text-[10px] uppercase tracking-widest text-game-pink">Special moves</p>
             <ul className="flex flex-col gap-3 flex-1">

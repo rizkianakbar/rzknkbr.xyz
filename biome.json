@@ -11,6 +11,7 @@
       "!**/public/openapi/*.json",
       "!**/secure/**/*.v*.json",
       "!node_modules",
+      "!next-env.d.ts",
       "!package.json"
     ]
   },

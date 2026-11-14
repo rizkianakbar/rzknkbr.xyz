@@ -113,10 +113,10 @@ function SkillsBranch(props: SkillsBranchProps) {
       </div>
 
       <ol className="relative mt-3 pl-5">
-        <span aria-hidden className="absolute left-[9px] top-0 bottom-5 w-0.5 bg-border" />
+        <span aria-hidden className="absolute left-2.25 top-0 bottom-5 w-0.5 bg-border" />
         <motion.span
           aria-hidden
-          className={cn('absolute left-[9px] top-0 bottom-5 w-0.5 origin-top opacity-60', branch.fill)}
+          className={cn('absolute left-2.25 top-0 bottom-5 w-0.5 origin-top opacity-60', branch.fill)}
           initial={reduce ? false : { scaleY: 0 }}
           whileInView={{ scaleY: 1 }}
           viewport={{ once: true, margin: '-60px' }}
@@ -127,7 +127,7 @@ function SkillsBranch(props: SkillsBranchProps) {
             <span
               aria-hidden
               className={cn(
-                'absolute -left-[11px] top-1/2 h-0.5 w-[11px] transition-colors',
+                'absolute -left-2.75 top-1/2 h-0.5 w-2.75 transition-colors',
                 lit.has(skill.name) ? branch.fill : 'bg-border',
               )}
             />

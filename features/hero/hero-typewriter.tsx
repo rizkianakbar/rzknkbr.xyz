@@ -42,7 +42,7 @@ export function HeroTypewriter(props: HeroTypewriterProps) {
         <span className="bg-linear-to-r from-game-accent-text via-game-cyan to-game-pink bg-clip-text text-transparent">
           {word.slice(0, length)}
         </span>
-        <span className="inline-block w-[3px] h-[1em] -mb-[0.15em] ml-1 bg-game-accent animate-pulse" />
+        <span className="inline-block w-0.75 h-[1em] -mb-[0.15em] ml-1 bg-game-accent animate-pulse" />
       </span>
     </span>
   );

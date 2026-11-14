@@ -24,7 +24,7 @@ export function Loot() {
           title="Built for fun (and for real)"
           subtitle="Open-source and personal projects, pinned to the quest board. Each one is live, with the source on GitHub."
         />
-        <div className="mt-10 rounded-[2rem] border-2 border-dashed border-border bg-[radial-gradient(circle,var(--border)_1px,transparent_1.5px)] bg-[length:18px_18px] p-5 sm:p-8">
+        <div className="mt-10 rounded-4xl border-2 border-dashed border-border bg-[radial-gradient(circle,var(--border)_1px,transparent_1.5px)] bg-size-[18px_18px] p-5 sm:p-8">
           <div className="grid gap-8 sm:grid-cols-2">
             {resumeData.sideQuests.map((quest, i) => (
               <Reveal key={quest.title} delay={(i % 2) * 0.08} className="h-full">
