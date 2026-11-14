@@ -5,7 +5,7 @@ import { useEffect, useEffectEvent } from 'react';
 import { fx } from '@/features/fx/fx.lib';
 import { FxCanvas } from '@/features/fx/fx-canvas';
 import { Hud } from '@/features/game/game-hud';
-import { useGame } from '@/features/game/game-provider';
+import { useGameActions, useGameState } from '@/features/game/game-provider';
 import { StartScreen } from '@/features/game/game-start-screen';
 import { FloatingXpLayer, Toasts } from '@/features/game/game-toasts';
 import { play, type SoundName, unlockAudio } from '@/features/sound/sound.lib';
@@ -28,7 +28,8 @@ const INTERACTIVE = 'a, button, [role="button"], summary, [data-sfx]';
 
 /** Everything game-wide: canvas effects, HUD, toasts, the start screen, and the global input listeners. */
 export function Game() {
-  const { started, track, award, notify } = useGame();
+  const { started } = useGameState();
+  const { track, award, notify } = useGameActions();
 
   // Every click makes a noise and a ripple.
   const onPointerDown = useEffectEvent((e: PointerEvent) => {

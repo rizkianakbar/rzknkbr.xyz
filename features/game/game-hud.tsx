@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { ACHIEVEMENTS, MAX_LEVEL, STORAGE_KEYS } from '@/features/game/game.constants';
 import { levelFor, levelProgress, readStorage, writeStorage } from '@/features/game/game.lib';
-import { useGame } from '@/features/game/game-provider';
+import { useGameActions, useGameState } from '@/features/game/game-provider';
 import { QuestBoard } from '@/features/game/game-quest-board';
 import { play } from '@/features/sound/sound.lib';
 
@@ -16,7 +16,8 @@ const HUD_BUTTON =
   'pointer-events-auto rounded-2xl border border-border bg-card/80 backdrop-blur-xl shadow-lg shadow-black/5 hover:border-game-accent transition-colors';
 
 export function Hud() {
-  const { xp, unlocked, muted, toggleMute, started } = useGame();
+  const { xp, unlocked, muted, started } = useGameState();
+  const { toggleMute } = useGameActions();
   const [boardOpen, setBoardOpen] = useState(false);
   const [coachOpen, setCoachOpen] = useState(false);
   const [boardSeen, setBoardSeen] = useState(true);

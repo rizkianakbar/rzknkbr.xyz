@@ -33,13 +33,8 @@ export type Toast = {
 
 type FloatingXp = { id: number; x: number; y: number; amount: number };
 
-type GameContextValue = {
-  xp: number;
-  unlocked: AchievementId[];
-  muted: boolean;
-  started: boolean;
-  toasts: Toast[];
-  floating: FloatingXp[];
+/** Stable callbacks: never change identity, so components that only act never re-render. */
+type GameActions = {
   start: () => void;
   toggleMute: () => void;
   award: (id: AchievementId, at?: Point) => void;
@@ -49,7 +44,23 @@ type GameContextValue = {
   reset: () => void;
 };
 
-const GameContext = createContext<GameContextValue | null>(null);
+/** Progress: changes on XP gains and unlocks. */
+type GameState = {
+  xp: number;
+  unlocked: AchievementId[];
+  muted: boolean;
+  started: boolean;
+};
+
+/** Short-lived feedback: changes on every toast and floating "+XP", read only by the layers that draw it. */
+type GameFeed = {
+  toasts: Toast[];
+  floating: FloatingXp[];
+};
+
+const ActionsContext = createContext<GameActions | null>(null);
+const StateContext = createContext<GameState | null>(null);
+const FeedContext = createContext<GameFeed | null>(null);
 
 const TOAST_MS = 4200;
 const FLOATING_XP_MS = 1100;
@@ -248,30 +259,37 @@ export function GameProvider(props: GameProviderProps) {
     play('close');
   }, [persist]);
 
-  const value = useMemo(
-    () => ({
-      xp,
-      unlocked,
-      muted,
-      started,
-      toasts,
-      floating,
-      start,
-      toggleMute,
-      award,
-      track,
-      notify,
-      dismissToast,
-      reset,
-    }),
-    [xp, unlocked, muted, started, toasts, floating, start, toggleMute, award, track, notify, dismissToast, reset],
+  const actions = useMemo<GameActions>(
+    () => ({ start, toggleMute, award, track, notify, dismissToast, reset }),
+    [start, toggleMute, award, track, notify, dismissToast, reset],
   );
+  const state = useMemo<GameState>(() => ({ xp, unlocked, muted, started }), [xp, unlocked, muted, started]);
+  const feed = useMemo<GameFeed>(() => ({ toasts, floating }), [toasts, floating]);
 
-  return <GameContext.Provider value={value}>{props.children}</GameContext.Provider>;
+  return (
+    <ActionsContext.Provider value={actions}>
+      <StateContext.Provider value={state}>
+        <FeedContext.Provider value={feed}>{props.children}</FeedContext.Provider>
+      </StateContext.Provider>
+    </ActionsContext.Provider>
+  );
 }
 
-export function useGame() {
-  const ctx = useContext(GameContext);
-  if (!ctx) throw new Error('useGame must be used within GameProvider');
-  return ctx;
+function useRequired<T>(context: React.Context<T | null>, name: string): T {
+  const value = useContext(context);
+  if (!value) throw new Error(`${name} must be used within GameProvider`);
+  return value;
+}
+
+/** Callbacks only. Prefer this: it never causes a re-render. */
+export function useGameActions() {
+  return useRequired(ActionsContext, 'useGameActions');
+}
+
+export function useGameState() {
+  return useRequired(StateContext, 'useGameState');
+}
+
+export function useGameFeed() {
+  return useRequired(FeedContext, 'useGameFeed');
 }

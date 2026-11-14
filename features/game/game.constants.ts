@@ -53,10 +53,18 @@ export const ACHIEVEMENTS = [
   {
     id: 'loot',
     title: 'Loot inspector',
-    description: 'Opened a project.',
+    description: 'Opened a loot chest.',
     hint: 'Loot is meant to be opened.',
     emoji: '💎',
     xp: 30,
+  },
+  {
+    id: 'all-loot',
+    title: 'Treasure hunter',
+    description: 'Opened every loot chest.',
+    hint: 'Six chests. No key required.',
+    emoji: '🗝️',
+    xp: 40,
   },
   {
     id: 'composer',

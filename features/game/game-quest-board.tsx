@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useEffectEvent, useRef } from 'react';
 import { ACHIEVEMENTS, LEVELS, MAX_LEVEL } from '@/features/game/game.constants';
 import { levelFor } from '@/features/game/game.lib';
-import { useGame } from '@/features/game/game-provider';
+import { useGameActions, useGameState } from '@/features/game/game-provider';
 import { play } from '@/features/sound/sound.lib';
 import { cn } from '@/lib/utils';
 
@@ -16,7 +16,8 @@ type QuestBoardProps = {
 /** Rank ladder plus every achievement: clues while locked, the real description once unlocked. */
 export function QuestBoard(props: QuestBoardProps) {
   const { onClose } = props;
-  const { unlocked, xp, reset } = useGame();
+  const { unlocked, xp } = useGameState();
+  const { reset } = useGameActions();
   const reduce = useReducedMotion();
   const info = levelFor(xp);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -54,7 +55,8 @@ export function QuestBoard(props: QuestBoardProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-        className="relative w-full max-w-lg max-h-[85dvh] overflow-y-auto rounded-3xl border-2 border-border bg-card p-6 shadow-2xl">
+        data-lenis-prevent
+        className="relative w-full max-w-lg max-h-[85dvh] overflow-y-auto overscroll-contain rounded-3xl border-2 border-border bg-card p-6 shadow-2xl">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
             <p className="font-pixel text-[10px] uppercase text-game-accent-text tracking-widest">

@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { fx } from '@/features/fx/fx.lib';
-import { useGame } from '@/features/game/game-provider';
+import { useGameActions, useGameState } from '@/features/game/game-provider';
 import { resumeData } from '@/lib/resume';
 
 const TITLE = resumeData.name.toUpperCase();
@@ -11,7 +11,8 @@ const LOAD_MS = 1300;
 const SEGMENTS = 20;
 
 export function StartScreen() {
-  const { start, toggleMute, muted } = useGame();
+  const { muted } = useGameState();
+  const { start, toggleMute } = useGameActions();
   const reduce = useReducedMotion();
   const [progress, setProgress] = useState(0);
   // Marks hydration: until then a CSS failsafe hides this screen after 8s in case JS never loads.
@@ -71,7 +72,7 @@ export function StartScreen() {
       aria-modal="true"
       aria-label="Start screen"
       className="fixed inset-0 z-80 grid place-items-center overflow-hidden bg-background/80 backdrop-blur-md crt"
-      exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.6, filter: 'blur(12px)' }}
+      exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.6 }}
       transition={{ duration: 0.6, ease: [0.7, 0, 0.84, 0] }}>
       <div className="relative flex flex-col items-center gap-8 px-6 text-center">
         <motion.p

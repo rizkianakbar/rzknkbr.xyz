@@ -2,11 +2,12 @@
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useRef } from 'react';
-import { type Toast, useGame } from '@/features/game/game-provider';
+import { type Toast, useGameActions, useGameFeed } from '@/features/game/game-provider';
 import { cn } from '@/lib/utils';
 
 export function Toasts() {
-  const { toasts, dismissToast } = useGame();
+  const { toasts } = useGameFeed();
+  const { dismissToast } = useGameActions();
 
   return (
     <div
@@ -96,7 +97,7 @@ function ToastCard(props: ToastCardProps) {
 const EXIT_SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const;
 
 export function FloatingXpLayer() {
-  const { floating } = useGame();
+  const { floating } = useGameFeed();
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-65">
