@@ -1,14 +1,14 @@
 'use client';
 
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { GameProvider } from '@/components/game/game-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 export function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <NextThemesProvider attribute="class" defaultTheme="dark">
+    <GameProvider>
       <TooltipProvider delayDuration={0} skipDelayDuration={0} disableHoverableContent>
         {children}
       </TooltipProvider>
-    </NextThemesProvider>
+    </GameProvider>
   );
 }

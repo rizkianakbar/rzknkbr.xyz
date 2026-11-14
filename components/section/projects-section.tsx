@@ -1,50 +1,37 @@
 import type { JSX } from 'react';
-import { BlurFade } from '@/components/blur-fade';
-import { ProjectCard } from '@/components/project-card';
+import { Reveal, SectionHeader } from '@/components/game/primitives';
+import { ProjectCard, SideQuestCard } from '@/components/project-card';
 import { resumeData } from '@/lib/resume';
-
-const BLUR_FADE_DELAY = 0.04;
 
 export function ProjectsSection(): JSX.Element {
   return (
-    <section id="projects">
-      <div className="flex min-h-0 flex-col gap-y-8">
-        <div className="flex flex-col gap-y-4 items-center justify-center">
-          <div className="flex items-center w-full">
-            <div className="flex-1 h-px bg-linear-to-r from-transparent from-5% via-border via-95% to-transparent" />
+    <section id="loot" data-section="loot" className="mx-auto w-full max-w-5xl px-5 sm:px-6 scroll-mt-28">
+      <SectionHeader
+        index="05"
+        kicker="Loot"
+        title="Things I shipped"
+        subtitle="Production products used by real people, sorted by rarity. Legendary means award-winning or revenue-making."
+      />
+      <div className="mt-10 grid gap-5 sm:grid-cols-2">
+        {resumeData.projects.map((project, i) => (
+          <Reveal key={project.title} delay={(i % 2) * 0.08} className="h-full">
+            <ProjectCard project={project} />
+          </Reveal>
+        ))}
+      </div>
 
-            <div className="border bg-primary z-10 rounded-xl px-4 py-1">
-              <span className="text-background text-sm font-medium">My Projects</span>
-            </div>
-
-            <div className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent" />
-          </div>
-
-          <div className="flex flex-col gap-y-3 items-center justify-center">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Check out my latest work</h2>
-
-            <p className="text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed text-balance text-center">
-              I&apos;ve worked on a variety of projects, from simple websites to complex web applications. Here are a
-              few of my favorites.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto auto-rows-fr">
-          {resumeData.projects.map((project, id) => (
-            <BlurFade key={project.title} delay={BLUR_FADE_DELAY * 12 + id * 0.05} className="h-full">
-              <ProjectCard
-                href={project.href}
-                key={project.title}
-                title={project.title}
-                description={project.description}
-                dates={project.dates}
-                tags={project.technologies}
-                image={project.image}
-                video={project.video}
-                links={project.links}
-              />
-            </BlurFade>
+      <div className="mt-20">
+        <SectionHeader
+          index="5B"
+          kicker="Side quests"
+          title="Built for fun (and for real)"
+          subtitle="Open-source and personal projects. Live, with the source on GitHub."
+        />
+        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          {resumeData.sideQuests.map((quest, i) => (
+            <Reveal key={quest.title} delay={(i % 2) * 0.08} className="h-full">
+              <SideQuestCard quest={quest} />
+            </Reveal>
           ))}
         </div>
       </div>

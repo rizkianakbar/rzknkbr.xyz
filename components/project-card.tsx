@@ -1,119 +1,156 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
-import { type JSX, useState } from 'react';
-import Markdown from 'react-markdown';
-import { Badge } from '@/components/ui/badge';
+import { type JSX, useEffect, useRef } from 'react';
+import { useGame } from '@/components/game/game-provider';
+import { Tilt } from '@/components/game/primitives';
+import { Icons } from '@/components/ui/svgs/icons';
+import type { Rarity, resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 
-interface Props {
-  title: string;
-  href?: string;
-  description: string;
-  dates: string;
-  tags: readonly string[];
-  link?: string;
-  image?: string;
-  video?: string;
-  links?: readonly { icon: React.ReactNode; type: string; href: string }[];
-  className?: string;
+const RARITY_LABEL: Record<Rarity, string> = {
+  legendary: '★ Legendary',
+  epic: '◆ Epic',
+  rare: '● Rare',
+};
+
+/** Only plays while on screen, so six autoplaying videos don't all decode at once. */
+function LazyVideo({ src, className }: { src: string; className?: string }): JSX.Element {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) void v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  return <video ref={ref} src={src} loop muted playsInline preload="metadata" className={className} />;
 }
 
-export function ProjectCard(props: Props): JSX.Element {
-  const { title, href, description, dates, tags, link, image, video, links, className } = props;
+export function ProjectCard({ project }: { project: (typeof resumeData.projects)[number] }): JSX.Element {
+  const { award } = useGame();
 
   return (
-    <div
-      className={cn(
-        'flex flex-col h-full border border-border rounded-xl overflow-hidden hover:ring-2 cursor-pointer hover:ring-muted transition-all duration-200',
-        className,
-      )}>
-      <div className="relative shrink-0">
-        <Link href={href || '#'} target="_blank" rel="noopener noreferrer" className="block">
-          {video ? (
-            <video src={video} autoPlay loop muted playsInline className="w-full h-48 object-cover" />
-          ) : image ? (
-            <ProjectImage src={image} alt={title} />
-          ) : (
-            <div className="w-full h-48 bg-muted" />
-          )}
-        </Link>
-
-        {links && links.length > 0 && (
-          <div className="absolute top-2 right-2 flex flex-wrap gap-2">
-            {links.map((link) => (
-              <Link
-                href={link.href}
-                key={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}>
-                <Badge
-                  className="flex items-center gap-1.5 text-xs bg-black text-white hover:bg-black/90"
-                  variant="default">
-                  {link.icon}
-                  {link.type}
-                </Badge>
-              </Link>
+    <Tilt className="h-full rounded-3xl" max={7}>
+      <a
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-sfx="coin"
+        onClick={(e) => award('loot', { x: e.clientX, y: e.clientY })}
+        className={cn(
+          'rarity-border group flex flex-col h-full rounded-3xl bg-card focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-game-accent/50',
+          `rarity-${project.rarity}`,
+        )}>
+        <div className="relative overflow-hidden rounded-t-3xl">
+          <LazyVideo
+            src={project.video}
+            className="w-full aspect-video object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          />
+          <span className="absolute top-3 left-3 font-pixel text-[9px] uppercase rounded-md px-2 py-1 bg-black/70 text-[var(--rarity)] backdrop-blur">
+            {RARITY_LABEL[project.rarity]}
+          </span>
+        </div>
+        <div className="p-5 flex flex-col gap-2 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h3 className="font-bold text-lg leading-tight">{project.title}</h3>
+              <p className="text-xs text-muted-foreground">{project.dates}</p>
+            </div>
+            <ArrowUpRight
+              className="size-5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
+              aria-hidden
+            />
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed flex-1">{project.description}</p>
+          <div className="flex flex-wrap gap-1.5 pt-2">
+            {project.technologies.map((t) => (
+              <span key={t} className="text-[11px] rounded-lg border border-border bg-muted/50 px-2 py-0.5">
+                {t}
+              </span>
             ))}
           </div>
-        )}
-      </div>
-
-      <div className="p-6 flex flex-col gap-3 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-col gap-1">
-            <h3 className="font-semibold">{title}</h3>
-
-            <time className="text-xs text-muted-foreground">{dates}</time>
-          </div>
-
-          <Link
-            href={href || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-            aria-label={`Open ${title}`}>
-            <ArrowUpRight className="h-4 w-4" aria-hidden />
-          </Link>
         </div>
-
-        <div className="text-xs flex-1 prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
-          <Markdown>{description}</Markdown>
-        </div>
-
-        {tags && tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-auto">
-            {tags.map((tag) => (
-              <Badge
-                key={tag}
-                className="text-[11px] font-medium border border-border h-6 w-fit px-2"
-                variant="outline">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+      </a>
+    </Tilt>
   );
 }
 
-function ProjectImage({ src, alt }: { src: string; alt: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  if (!src || imageError) {
-    return <div className="w-full h-48 bg-muted" />;
-  }
+export function SideQuestCard({ quest }: { quest: (typeof resumeData.sideQuests)[number] }): JSX.Element {
+  const { award } = useGame();
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className="w-full h-48 object-cover pointer-events-none select-none"
-      onError={() => setImageError(true)}
-    />
+    <Tilt className="h-full rounded-3xl" max={7}>
+      <article className="group relative flex flex-col h-full rounded-3xl border border-border bg-card overflow-hidden hover:border-game-cyan/60 transition-colors">
+        <div className="relative aspect-[16/9] overflow-hidden bg-linear-to-br from-game-cyan/25 via-game-violet/20 to-game-pink/25">
+          {quest.image ? (
+            // biome-ignore lint/performance/noImgElement: static screenshots
+            <img
+              src={quest.image}
+              alt={`${quest.title} screenshot`}
+              loading="lazy"
+              className="size-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              draggable={false}
+            />
+          ) : (
+            <div className="size-full grid place-items-center">
+              <div className="flex flex-col items-center gap-3">
+                <span className="text-6xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                  {quest.emoji}
+                </span>
+                <span className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground text-center px-4">
+                  Front desk → Exam → Pharmacy → Cashier
+                </span>
+              </div>
+            </div>
+          )}
+          <span className="absolute top-3 left-3 font-pixel text-[9px] uppercase rounded-md px-2 py-1 bg-black/70 text-game-cyan backdrop-blur">
+            {quest.emoji} Side quest
+          </span>
+        </div>
+        <div className="p-5 flex flex-col gap-2 flex-1">
+          <div>
+            <h3 className="font-bold text-lg leading-tight">{quest.title}</h3>
+            <p className="text-xs text-muted-foreground">{quest.tagline}</p>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed flex-1">{quest.description}</p>
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {quest.technologies.map((t) => (
+              <span key={t} className="text-[11px] rounded-lg border border-border bg-muted/50 px-2 py-0.5">
+                {t}
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-2 pt-3">
+            <a
+              href={quest.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-sfx="coin"
+              onClick={(e) => award('loot', { x: e.clientX, y: e.clientY })}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-foreground text-background text-xs font-semibold px-3 py-2 hover:-translate-y-0.5 transition-transform">
+              <Icons.globe className="size-3.5" />
+              {quest.href.includes('npmjs') ? 'npm' : 'Live'}
+            </a>
+            <a
+              href={quest.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-sfx="coin"
+              onClick={(e) => award('loot', { x: e.clientX, y: e.clientY })}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-border text-xs font-semibold px-3 py-2 hover:-translate-y-0.5 hover:border-foreground/40 transition-all">
+              <Icons.github className="size-3.5" />
+              Source
+            </a>
+          </div>
+        </div>
+      </article>
+    </Tilt>
   );
 }

@@ -1,49 +1,47 @@
 import { ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
 import type { JSX } from 'react';
+import { Reveal } from '@/components/game/primitives';
 import { resumeData } from '@/lib/resume';
 
 export function EducationSection(): JSX.Element {
   return (
-    <div className="flex flex-col gap-8">
-      {resumeData.education.map((education) => (
-        <Link
-          key={education.school}
-          href={education.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-x-3 justify-between group">
-          <div className="flex items-center gap-x-3 flex-1 min-w-0">
-            {education.logoUrl ? (
+    <div className="mx-auto w-full max-w-3xl px-5 sm:px-6">
+      <Reveal>
+        <p className="font-pixel text-[11px] uppercase tracking-[0.25em] text-muted-foreground mb-4">
+          Training grounds
+        </p>
+      </Reveal>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {resumeData.education.map((edu, i) => (
+          <Reveal key={edu.school} delay={i * 0.06}>
+            <a
+              href={edu.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 rounded-3xl border border-border bg-card/80 backdrop-blur p-4 h-full hover:border-foreground/25 hover:-translate-y-1 transition-all">
+              {/* biome-ignore lint/performance/noImgElement: small static logos */}
               <img
-                src={education.logoUrl}
-                alt={education.school}
-                className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none select-none pointer-events-none"
+                src={edu.logoUrl}
+                alt=""
+                className="size-10 rounded-2xl border border-border bg-white p-1 object-contain shrink-0"
               />
-            ) : (
-              <div className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />
-            )}
-
-            <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-              <div className="font-semibold leading-none flex items-center gap-2">
-                {education.school}
-                <ArrowUpRight
-                  className="h-3.5 w-3.5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
-                  aria-hidden
-                />
+              <div className="min-w-0 flex-1">
+                <p className="font-bold flex items-center gap-1">
+                  {edu.school}
+                  <ArrowUpRight
+                    className="size-3.5 text-muted-foreground opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                    aria-hidden
+                  />
+                </p>
+                <p className="text-xs text-muted-foreground">{edu.degree}</p>
+                <p className="text-xs text-muted-foreground tabular-nums mt-0.5">
+                  {edu.start === edu.end ? edu.start : `${edu.start} – ${edu.end}`}
+                </p>
               </div>
-
-              <div className="font-sans text-sm text-muted-foreground">{education.degree}</div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
-            <span>
-              {education.start} - {education.end}
-            </span>
-          </div>
-        </Link>
-      ))}
+            </a>
+          </Reveal>
+        ))}
+      </div>
     </div>
   );
 }

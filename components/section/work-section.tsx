@@ -1,79 +1,184 @@
 'use client';
 
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { type JSX, useState } from 'react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useGame } from '@/components/game/game-provider';
+import { Reveal, SectionHeader } from '@/components/game/primitives';
 import { resumeData } from '@/lib/resume';
+import { play } from '@/lib/sound';
 import { cn } from '@/lib/utils';
 
+const TOTAL = resumeData.work.length;
+
 export function WorkSection(): JSX.Element {
+  const [open, setOpen] = useState<string | null>(resumeData.work[0].company);
+
   return (
-    <Accordion type="single" collapsible className="w-full grid gap-6">
-      {resumeData.work.map((work) => (
-        <AccordionItem key={work.company} value={work.company} className="w-full border-b-0 grid gap-2">
-          <AccordionTrigger className="hover:no-underline p-0 cursor-pointer transition-colors rounded-none group [&>svg]:hidden">
-            <div className="flex items-center gap-x-3 justify-between w-full text-left">
-              <div className="flex items-center gap-x-3 flex-1 min-w-0">
-                <LogoImage src={work.logoUrl} alt={work.company} />
+    <section id="quests" data-section="quests" className="mx-auto w-full max-w-3xl px-5 sm:px-6 scroll-mt-28">
+      <SectionHeader
+        index="04"
+        kicker="Quest log"
+        title="Six quests, six years"
+        subtitle="Every job is a quest. Open one to read the lore. Opening quests earns XP."
+      />
 
-                <div className="flex-1 min-w-0 gap-0.5 flex flex-col">
-                  <div className="font-semibold leading-none flex items-center gap-2">
-                    {work.company}
-
-                    <span className="relative inline-flex items-center w-3.5 h-3.5">
-                      <ChevronRight
-                        className={cn(
-                          'absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-300 ease-out',
-                          'translate-x-0 opacity-0',
-                          'group-hover:translate-x-1 group-hover:opacity-100',
-                          'group-data-[state=open]:opacity-0 group-data-[state=open]:translate-x-0',
-                        )}
-                      />
-
-                      <ChevronDown
-                        className={cn(
-                          'absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-200',
-                          'opacity-0 rotate-0',
-                          'group-data-[state=open]:opacity-100 group-data-[state=open]:rotate-180',
-                        )}
-                      />
-                    </span>
-                  </div>
-
-                  <div className="font-sans text-sm text-muted-foreground">{work.title}</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
-                <span>
-                  {work.start} - {work.end ?? 'Present'}
-                </span>
-              </div>
-            </div>
-          </AccordionTrigger>
-
-          <AccordionContent className="p-0 ml-13 text-xs sm:text-sm text-muted-foreground">
-            {work.description}
-          </AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
+      <div className="relative mt-10">
+        <div
+          aria-hidden
+          className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-linear-to-b from-game-accent via-game-violet to-transparent"
+        />
+        <ol className="flex flex-col gap-4">
+          {resumeData.work.map((work, i) => (
+            <Reveal key={work.company} delay={i * 0.05} as="li" className="relative pl-14">
+              <Quest
+                work={work}
+                level={TOTAL - i}
+                open={open === work.company}
+                onToggle={() => setOpen((o) => (o === work.company ? null : work.company))}
+              />
+            </Reveal>
+          ))}
+        </ol>
+      </div>
+    </section>
   );
 }
 
-function LogoImage({ src, alt }: { src: string; alt: string }): JSX.Element {
-  const [imageError, setImageError] = useState(false);
+function Quest({
+  work,
+  level,
+  open,
+  onToggle,
+}: {
+  work: (typeof resumeData.work)[number];
+  level: number;
+  open: boolean;
+  onToggle: () => void;
+}): JSX.Element {
+  const { track } = useGame();
+  const reduce = useReducedMotion();
+  const active = work.end === 'Present';
+  const id = `quest-${work.company.replace(/\s+/g, '-').toLowerCase()}`;
 
-  if (!src || imageError) {
-    return <div className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />;
-  }
+  const toggle = (e: React.MouseEvent) => {
+    play(open ? 'close' : 'open');
+    if (!open) track({ kind: 'quest', key: work.company, total: TOTAL }, { x: e.clientX, y: e.clientY });
+    onToggle();
+  };
 
   return (
+    <>
+      <motion.span
+        aria-hidden
+        animate={open ? { scale: 1.15, rotate: 45 } : { scale: 1, rotate: 45 }}
+        className={cn(
+          'absolute left-2 top-5 grid place-items-center size-6 rounded-md border-2 font-pixel text-[9px]',
+          open || active
+            ? 'bg-game-accent border-game-accent text-game-accent-foreground'
+            : 'bg-card border-border text-muted-foreground',
+        )}>
+        <span className="-rotate-45">{level}</span>
+      </motion.span>
+
+      <div
+        className={cn(
+          'rounded-3xl border bg-card/80 backdrop-blur transition-colors',
+          open ? 'border-game-accent/50 shadow-xl shadow-game-accent/5' : 'border-border hover:border-foreground/20',
+        )}>
+        <button
+          type="button"
+          data-sfx="none"
+          onClick={toggle}
+          aria-expanded={open}
+          aria-controls={id}
+          className="w-full flex items-center gap-3 p-4 sm:p-5 text-left">
+          <Logo src={work.logoUrl} alt={work.company} />
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-bold">{work.company}</span>
+              {active && (
+                <span className="font-pixel text-[9px] uppercase rounded-md bg-game-accent text-game-accent-foreground px-1.5 py-0.5 animate-pulse">
+                  Active quest
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-muted-foreground">{work.title}</p>
+          </div>
+          <div className="hidden sm:block text-right text-xs text-muted-foreground tabular-nums shrink-0">
+            <p>
+              {work.start} – {work.end}
+            </p>
+            <p>{work.location}</p>
+          </div>
+          <motion.span animate={{ rotate: open ? 180 : 0 }} className="shrink-0 text-muted-foreground">
+            <ChevronDown className="size-4" aria-hidden />
+          </motion.span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              id={id}
+              key="content"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 32 }}
+              className="overflow-hidden">
+              <div className="px-4 sm:px-5 pb-5 flex flex-col gap-3">
+                <p className="sm:hidden text-xs text-muted-foreground">
+                  {work.start} – {work.end} · {work.location}
+                </p>
+                <p className="text-sm italic text-muted-foreground">{work.blurb}</p>
+                <ul className="flex flex-col gap-2">
+                  {work.bullets.map((b, i) => (
+                    <motion.li
+                      key={b}
+                      initial={reduce ? false : { opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.08 + i * 0.06 }}
+                      className="flex gap-2.5 text-sm leading-relaxed">
+                      <span className="text-game-accent-text font-pixel text-xs mt-0.5" aria-hidden>
+                        ✓
+                      </span>
+                      <span>{b}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {work.tech.map((t) => (
+                    <span key={t} className="text-[11px] rounded-lg border border-border bg-muted/50 px-2 py-0.5">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
+  );
+}
+
+function Logo({ src, alt }: { src: string; alt: string }): JSX.Element {
+  const [error, setError] = useState(false);
+  if (!src || error) {
+    return (
+      <span className="grid place-items-center size-10 rounded-2xl border border-border bg-muted font-pixel text-xs shrink-0">
+        {alt.slice(0, 2).toUpperCase()}
+      </span>
+    );
+  }
+  return (
+    // biome-ignore lint/performance/noImgElement: small static logos
     <img
       src={src}
-      alt={alt}
-      className="size-8 md:size-10 p-0.5 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none select-none pointer-events-none"
-      onError={() => setImageError(true)}
+      alt=""
+      onError={() => setError(true)}
+      className="size-10 rounded-2xl border border-border bg-white p-1 object-contain shrink-0"
+      draggable={false}
     />
   );
 }

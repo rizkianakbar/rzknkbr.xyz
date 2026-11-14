@@ -5,6 +5,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
+  --font-pixel: var(--font-silkscreen), ui-monospace, monospace;
+  --color-game-accent: var(--game-accent);
+  --color-game-accent-foreground: var(--game-accent-foreground);
+  --color-game-accent-text: var(--game-accent-text);
+  --color-game-pink: var(--game-pink);
+  --color-game-cyan: var(--game-cyan);
+  --color-game-amber: var(--game-amber);
+  --color-game-violet: var(--game-violet);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -75,22 +83,32 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --game-accent: #b8f23a;
+  --game-accent-soft: rgb(184 242 58 / 0.25);
+  --game-accent-foreground: #0e1404;
+  --game-accent-text: #3f7a00;
+  --game-pink: #e8357f;
+  --game-cyan: #0aa5c9;
+  --game-amber: #d98a00;
+  --game-violet: #7c4dff;
+  --fx-dot: rgba(20, 20, 40, 0.13);
+  --fx-accent: #6cc400;
+  --fx-pink: #ff4fa3;
+  --fx-cyan: #22c3ee;
+  --fx-amber: #ffb800;
+  --fx-violet: #8b5cf6;
 }
 
 .dark {
-  --background: oklch(0.18 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
@@ -109,6 +127,172 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --background: oklch(0.155 0.012 275);
+  --card: oklch(0.195 0.014 275);
+  --muted: oklch(0.255 0.014 275);
+  --secondary: oklch(0.255 0.014 275);
+  --accent: oklch(0.255 0.014 275);
+  --game-accent: #c6ff3d;
+  --game-accent-soft: rgb(198 255 61 / 0.2);
+  --game-accent-foreground: #0e1404;
+  --game-accent-text: #c6ff3d;
+  --game-pink: #ff5fae;
+  --game-cyan: #4fe3ff;
+  --game-amber: #ffc83d;
+  --game-violet: #a98bff;
+  --fx-dot: rgba(255, 255, 255, 0.11);
+  --fx-accent: #c6ff3d;
+  --fx-pink: #ff5fae;
+  --fx-cyan: #4fe3ff;
+  --fx-amber: #ffc83d;
+  --fx-violet: #a98bff;
+}
+
+/* Returning visitors in the same session skip the start screen (set by an inline script before paint). */
+html[data-started] #start-screen {
+  display: none;
+}
+
+/* Failsafe: if JavaScript never hydrates (blocked or failed), the start screen gets out of the way by itself. */
+#start-screen:not([data-hydrated]) {
+  animation: start-failsafe 0.4s 8s forwards;
+}
+
+@keyframes start-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+.crt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, rgb(0 0 0 / 0.06) 2px 4px);
+}
+
+.start-title-glow {
+  text-shadow:
+    0 0 24px var(--game-accent-soft),
+    4px 4px 0 var(--game-pink);
+}
+
+.press-start {
+  animation: press-start-pulse 1.1s steps(2, jump-none) infinite;
+}
+
+@keyframes press-start-pulse {
+  50% {
+    filter: brightness(1.25);
+    box-shadow:
+      0 0 0 12px var(--game-accent-soft),
+      0 10px 60px -5px var(--game-accent);
+  }
+}
+
+.xp-shine {
+  background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: xp-shine 2.4s linear infinite;
+}
+
+@keyframes xp-shine {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+.holo {
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgb(255 95 174 / 0.35) 36%,
+    rgb(79 227 255 / 0.35) 46%,
+    rgb(198 255 61 / 0.35) 56%,
+    transparent 72%
+  );
+  background-size: 250% 250%;
+  mix-blend-mode: color-dodge;
+}
+
+@keyframes holo {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+.rarity-legendary {
+  --rarity: var(--game-amber);
+}
+.rarity-epic {
+  --rarity: var(--game-violet);
+}
+.rarity-rare {
+  --rarity: var(--game-cyan);
+}
+
+.rarity-border {
+  position: relative;
+  isolation: isolate;
+}
+.rarity-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(from var(--angle, 0deg), var(--rarity), transparent 30%, transparent 70%, var(--rarity));
+  animation: rarity-spin 4s linear infinite;
+  opacity: 0.55;
+  transition: opacity 0.3s;
+}
+.rarity-border:hover::before {
+  opacity: 1;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rarity-spin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.marquee {
+  animation: marquee 30s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press-start,
+  .xp-shine,
+  .rarity-border::before,
+  .marquee {
+    animation: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @layer base {

@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'motion/react';
 import type { JSX } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
@@ -8,6 +9,7 @@ import {
   type GitHubContributionsResponse,
   monthLabelsForWeeks,
 } from '@/lib/github-contributions';
+import { playNote } from '@/lib/sound';
 import { cn } from '@/lib/utils';
 
 function formatContributionTooltip(count: number, isoDate: string): string {
@@ -57,7 +59,8 @@ export function GitHubContributionGraph(props: GitHubContributionGraphProps): JS
   const total = data.total.lastYear;
 
   return (
-    <section className={cn('opacity-80 hover:opacity-100 transition-opacity relative w-full', className)}>
+    <section
+      className={cn('relative w-full rounded-3xl border border-border bg-card/80 backdrop-blur p-4 sm:p-6', className)}>
       <div className="relative text-xs text-muted-foreground mb-2 h-4 w-full">
         {monthLabels.map((m) => (
           <span
@@ -72,11 +75,25 @@ export function GitHubContributionGraph(props: GitHubContributionGraphProps): JS
       <div className="w-full">
         <div className="flex gap-1 w-full">
           {weeks.map((week, wi) => (
-            <div key={week.days[0]?.date ?? wi} className="flex flex-col gap-1 flex-1">
+            <motion.div
+              key={week.days[0]?.date ?? wi}
+              data-reveal
+              className="flex flex-col gap-1 flex-1"
+              initial={{ opacity: 0, y: 14, scale: 0.6 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ type: 'spring', stiffness: 400, damping: 18, delay: wi * 0.012 }}>
               {week.days.map((day) => (
                 <Tooltip key={day.date}>
                   <TooltipTrigger asChild>
-                    <div className={cn('aspect-square w-full rounded-[2px] cursor-pointer', levelClass(day.level))} />
+                    <div
+                      data-sfx="none"
+                      onPointerDown={() => playNote(day.level * 2 + (wi % 3), 'sine')}
+                      className={cn(
+                        'aspect-square w-full rounded-[2px] cursor-pointer transition-transform hover:scale-150 hover:z-10 relative',
+                        levelClass(day.level),
+                      )}
+                    />
                   </TooltipTrigger>
 
                   <TooltipContent
@@ -87,7 +104,7 @@ export function GitHubContributionGraph(props: GitHubContributionGraphProps): JS
                   </TooltipContent>
                 </Tooltip>
               ))}
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

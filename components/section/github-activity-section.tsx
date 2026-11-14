@@ -1,10 +1,8 @@
 import type { JSX } from 'react';
-import { BlurFade } from '@/components/blur-fade';
+import { Reveal, SectionHeader } from '@/components/game/primitives';
 import { GitHubContributionGraph } from '@/components/github-contribution-graph';
 import { fetchGitHubContributions } from '@/lib/github-contributions';
 import { resumeData } from '@/lib/resume';
-
-const BLUR_STEP = 0.04;
 
 function githubProfileUrl(): string {
   const gh = resumeData.contact.social.GitHub;
@@ -27,13 +25,16 @@ export async function GithubActivitySection(): Promise<JSX.Element> {
   const data = await fetchGitHubContributions(username);
 
   return (
-    <section id="github">
-      <div className="flex min-h-0 flex-col gap-y-6">
-        <BlurFade delay={BLUR_STEP * 4.25}>
-          <h2 className="text-xl font-bold">GitHub Activity</h2>
-        </BlurFade>
+    <section id="github" data-section="github" className="mx-auto w-full max-w-5xl px-5 sm:px-6 scroll-mt-28">
+      <div className="flex min-h-0 flex-col gap-y-10">
+        <SectionHeader
+          index="03"
+          kicker="Daily grind"
+          title="The grind, visualized"
+          subtitle="A year of commits. Hover the squares, then click them for notes."
+        />
 
-        <BlurFade delay={BLUR_STEP * 4.5}>
+        <Reveal>
           {data ? (
             <GitHubContributionGraph data={data} profileUrl={profileUrl} />
           ) : (
@@ -49,7 +50,7 @@ export async function GithubActivitySection(): Promise<JSX.Element> {
               .
             </p>
           )}
-        </BlurFade>
+        </Reveal>
       </div>
     </section>
   );
