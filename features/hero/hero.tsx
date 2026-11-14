@@ -8,7 +8,8 @@ import { HeroPlayerCard } from '@/features/hero/hero-player-card';
 import { HeroTypewriter } from '@/features/hero/hero-typewriter';
 import { resumeData } from '@/lib/resume';
 
-const [FIRST, LAST] = resumeData.name.toUpperCase().split(' ');
+// Real casing in the markup (search engines read "Rizkian Akbar"); CSS makes it uppercase.
+const [FIRST, LAST] = resumeData.name.split(' ');
 
 const PILL = 'inline-flex items-center rounded-full border border-border bg-card/70 backdrop-blur px-3 py-1 text-xs';
 const SECONDARY_BUTTON =
@@ -55,16 +56,15 @@ export function Hero() {
               className="font-pixel text-xs uppercase tracking-[0.3em] text-game-accent-text mb-3">
               Player 1 · Hi, I&apos;m
             </motion.p>
-            <h1
-              aria-label={resumeData.name}
-              className="font-extrabold tracking-tighter leading-[0.85] text-[clamp(3.4rem,13vw,7.5rem)] select-none">
-              <span className="block" aria-hidden>
+            <h1 className="font-extrabold uppercase tracking-tighter leading-[0.85] text-[clamp(3.4rem,13vw,7.5rem)] select-none">
+              <span className="block">
                 {FIRST.split('').map((ch, i) => (
                   // biome-ignore lint/suspicious/noArrayIndexKey: letters of a static name
                   <HeroLetter key={i} char={ch} index={i} show={show} />
                 ))}
               </span>
-              <span className="block text-transparent [-webkit-text-stroke:2px_var(--foreground)]" aria-hidden>
+              {/* A real space between the words, so the heading reads "Rizkian Akbar". */}{' '}
+              <span className="block text-transparent [-webkit-text-stroke:2px_var(--foreground)]">
                 {LAST.split('').map((ch, i) => (
                   // biome-ignore lint/suspicious/noArrayIndexKey: letters of a static name
                   <HeroLetter key={i} char={ch} index={FIRST.length + i} show={show} outline />

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'motion/react';
+import { Fragment } from 'react';
 import { Reveal } from '@/components/reveal';
 
 type SectionHeaderProps = {
@@ -26,17 +27,20 @@ export function SectionHeader(props: SectionHeaderProps) {
       </Reveal>
       <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-balance">
         {title.split(' ').map((word, i) => (
-          <motion.span
-            // biome-ignore lint/suspicious/noArrayIndexKey: words of a static title
-            key={i}
-            data-reveal
-            className="inline-block mr-[0.25em]"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40, rotate: 6 }}
-            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ type: 'spring', stiffness: 380, damping: 20, delay: 0.08 + i * 0.06 }}>
-            {word}
-          </motion.span>
+          // biome-ignore lint/suspicious/noArrayIndexKey: words of a static title
+          <Fragment key={i}>
+            {/* A real space, so the heading reads as words (not "Numbersfromthefield"). */}
+            {i > 0 && ' '}
+            <motion.span
+              data-reveal
+              className="inline-block"
+              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40, rotate: 6 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ type: 'spring', stiffness: 380, damping: 20, delay: 0.08 + i * 0.06 }}>
+              {word}
+            </motion.span>
+          </Fragment>
         ))}
       </h2>
       {subtitle && (

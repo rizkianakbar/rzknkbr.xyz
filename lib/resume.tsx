@@ -22,7 +22,10 @@ type LootTone = 'red' | 'yellow' | 'purple';
 
 export const resumeData = {
   name: 'Rizkian Akbar',
-  url: 'https://rzknkbr.xyz',
+  /** Other names people search for: full legal name and handle. Used in structured data. */
+  alternateNames: ['Rizkian Akbar Juniansyah', 'rzknkbr'],
+  // Canonical host: the apex domain redirects to www, so every absolute URL must use www.
+  url: 'https://www.rzknkbr.xyz',
   location: 'Bandung, Indonesia',
   locationLink: 'https://www.google.com/maps/place/bandung',
   availability: 'Open to remote & relocation',

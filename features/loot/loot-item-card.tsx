@@ -47,8 +47,6 @@ export function LootItemCard(props: LootItemCardProps) {
   return (
     <motion.article
       data-reveal
-      inert={!revealed}
-      aria-hidden={!revealed}
       style={{ transformPerspective: 1000, '--loot-tone': tone.ring } as React.CSSProperties}
       initial={false}
       animate={

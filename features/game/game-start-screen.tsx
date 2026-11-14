@@ -83,7 +83,9 @@ export function StartScreen() {
           rzknkbr.xyz presents
         </motion.p>
 
-        <h1 className="font-pixel text-4xl sm:text-6xl md:text-7xl leading-none flex flex-wrap justify-center">
+        <p
+          aria-hidden
+          className="font-pixel text-4xl sm:text-6xl md:text-7xl leading-none flex flex-wrap justify-center">
           {TITLE.split('').map((ch, i) => (
             <motion.span
               // biome-ignore lint/suspicious/noArrayIndexKey: letters of a static string
@@ -95,7 +97,7 @@ export function StartScreen() {
               {ch === ' ' ? ' ' : ch}
             </motion.span>
           ))}
-        </h1>
+        </p>
 
         <motion.p
           initial={{ opacity: 0 }}

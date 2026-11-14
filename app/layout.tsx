@@ -4,6 +4,7 @@ import Script from 'next/script';
 import { Providers } from '@/app/providers';
 import { Game } from '@/features/game/game';
 import { Navbar } from '@/features/navbar/navbar';
+import { SEO_DESCRIPTION, SEO_KEYWORDS, SEO_TITLE } from '@/features/seo/seo.lib';
 import { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 
@@ -23,15 +24,31 @@ const silkscreen = Silkscreen({
 
 export const metadata: Metadata = {
   metadataBase: new URL(resumeData.url),
-  title: { default: `${resumeData.name} · ${resumeData.title}`, template: `%s | ${resumeData.name}` },
-  description: resumeData.description,
+  title: { default: SEO_TITLE, template: `%s | ${resumeData.name}` },
+  description: SEO_DESCRIPTION,
+  keywords: SEO_KEYWORDS,
+  applicationName: resumeData.name,
+  authors: [{ name: resumeData.name, url: resumeData.url }],
+  creator: resumeData.name,
+  category: 'technology',
+  alternates: { canonical: '/' },
   openGraph: {
-    title: `${resumeData.name} · ${resumeData.title}`,
-    description: resumeData.description,
-    url: resumeData.url,
+    type: 'profile',
+    firstName: 'Rizkian',
+    lastName: 'Akbar',
+    username: 'rzknkbr',
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
+    url: '/',
     siteName: resumeData.name,
     locale: 'en_US',
-    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
+    creator: '@rzknkbr',
+    site: '@rzknkbr',
   },
   robots: {
     index: true,
@@ -44,7 +61,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  twitter: { title: resumeData.name, card: 'summary_large_image' },
 };
 
 export const viewport: Viewport = {

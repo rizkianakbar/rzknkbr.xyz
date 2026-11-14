@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronDown } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Reveal } from '@/components/reveal';
@@ -119,47 +119,49 @@ function QuestEntry(props: QuestEntryProps) {
           </motion.span>
         </button>
 
-        <AnimatePresence initial={false}>
-          {open && (
-            <motion.div
-              id={id}
-              key="content"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 32 }}
-              className="overflow-hidden">
-              <div className="px-4 sm:px-5 pb-5 flex flex-col gap-3">
-                <p className="sm:hidden text-xs text-muted-foreground">
-                  {work.start} – {work.end} · {work.location}
-                </p>
-                <p className="text-sm italic text-muted-foreground">{work.blurb}</p>
-                <ul className="flex flex-col gap-2">
-                  {work.bullets.map((b, i) => (
-                    <motion.li
-                      key={b}
-                      initial={reduce ? false : { opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.08 + i * 0.06 }}
-                      className="flex gap-2.5 text-sm leading-relaxed">
-                      <span className="text-game-accent-text font-pixel text-xs mt-0.5" aria-hidden>
-                        ✓
-                      </span>
-                      <span>{b}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {work.tech.map((t) => (
-                    <span key={t} className="text-[11px] rounded-lg border border-border bg-muted/50 px-2 py-0.5">
-                      {t}
+        {/*
+          Always in the HTML, so search engines index every quest's details, not just the open one.
+          Collapsed with a grid-row transition, and inert while closed so keyboard and screen-reader
+          users only meet it when it's open.
+        */}
+        <div
+          id={id}
+          inert={!open}
+          className={cn(
+            'grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none',
+            open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+          )}>
+          <div className="overflow-hidden">
+            <div className="px-4 sm:px-5 pb-5 flex flex-col gap-3">
+              <p className="sm:hidden text-xs text-muted-foreground">
+                {work.start} – {work.end} · {work.location}
+              </p>
+              <p className="text-sm italic text-muted-foreground">{work.blurb}</p>
+              <ul className="flex flex-col gap-2">
+                {work.bullets.map((b, i) => (
+                  <motion.li
+                    key={b}
+                    initial={false}
+                    animate={open || reduce ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                    transition={{ delay: open ? 0.08 + i * 0.06 : 0 }}
+                    className="flex gap-2.5 text-sm leading-relaxed">
+                    <span className="text-game-accent-text font-pixel text-xs mt-0.5" aria-hidden>
+                      ✓
                     </span>
-                  ))}
-                </div>
+                    <span>{b}</span>
+                  </motion.li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {work.tech.map((t) => (
+                  <span key={t} className="text-[11px] rounded-lg border border-border bg-muted/50 px-2 py-0.5">
+                    {t}
+                  </span>
+                ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
