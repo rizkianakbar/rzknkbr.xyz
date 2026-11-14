@@ -13,11 +13,6 @@ const MUTED = '#8b8a9c';
 const HAIRLINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#c6ff3d';
 
-const STATS = [
-  { value: '800K', label: 'monthly visitors' },
-  { value: '703', label: 'gamified campaigns' },
-  { value: 'WAN-IFRA', label: 'Digital Media Award 2024' },
-];
 const DOMAIN = new URL(resumeData.url).host;
 
 /** Reads an image as a data URL, detecting the real type from its bytes (not its file extension). */
@@ -56,7 +51,6 @@ export default async function OpengraphImage() {
     resumeData.location,
     resumeData.availability,
     'Full-stack & Web3',
-    ...STATS.flatMap((s) => [s.value, s.label]),
   ].join('');
   const [avatar, bold, medium] = await Promise.all([
     imageDataUrl(resumeData.avatarUrl),
@@ -103,7 +97,7 @@ export default async function OpengraphImage() {
       </div>
 
       {/* Middle: who, and a face */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', fontSize: 84, fontWeight: 700, lineHeight: 1, letterSpacing: -3.5 }}>
             {resumeData.name}
@@ -120,8 +114,8 @@ export default async function OpengraphImage() {
         <img
           src={avatar}
           alt=""
-          width={200}
-          height={240}
+          width={240}
+          height={288}
           style={{
             borderRadius: 28,
             objectFit: 'cover',
@@ -129,24 +123,6 @@ export default async function OpengraphImage() {
             border: `1px solid ${HAIRLINE}`,
           }}
         />
-      </div>
-
-      {/* Bottom: proof, separated by a hairline */}
-      <div style={{ display: 'flex', borderTop: `1px solid ${HAIRLINE}`, paddingTop: 32 }}>
-        {STATS.map((stat, i) => (
-          <div
-            key={stat.value}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: 1,
-              paddingLeft: i === 0 ? 0 : 32,
-              borderLeft: i === 0 ? 'none' : `1px solid ${HAIRLINE}`,
-            }}>
-            <div style={{ display: 'flex', fontSize: 40, fontWeight: 700, letterSpacing: -1.5 }}>{stat.value}</div>
-            <div style={{ display: 'flex', fontSize: 20, color: MUTED, marginTop: 6 }}>{stat.label}</div>
-          </div>
-        ))}
       </div>
     </div>,
     { ...size, fonts },
