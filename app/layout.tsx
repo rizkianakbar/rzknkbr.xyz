@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono, Silkscreen } from 'next/font/google';
+import { Geist, Silkscreen } from 'next/font/google';
 import Script from 'next/script';
 import { Providers } from '@/app/providers';
 import { Game } from '@/features/game/game';
@@ -9,16 +9,10 @@ import { cn } from '@/lib/utils';
 
 import './globals.css';
 
+// Geist is a variable font: one file covers every weight, so no `weight` list.
 const geist = Geist({
   subsets: ['latin'],
   variable: '--font-sans',
-  weight: ['400', '500', '600', '700', '800'],
-});
-
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
 });
 
 const silkscreen = Silkscreen({
@@ -74,7 +68,7 @@ export default function RootLayout(props: RootLayoutProps) {
         <noscript>
           <style>
             {
-              '#start-screen{display:none!important}[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}'
+              '#start-screen,[data-chest]{display:none!important}[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}'
             }
           </style>
         </noscript>
@@ -83,7 +77,6 @@ export default function RootLayout(props: RootLayoutProps) {
         className={cn(
           'min-h-screen bg-background font-sans antialiased relative overflow-x-clip',
           geist.variable,
-          geistMono.variable,
           silkscreen.variable,
         )}>
         <Script defer src="https://cloud.umami.is/script.js" data-website-id="19f914e0-2aba-42c7-bdb9-d73147572d3d" />

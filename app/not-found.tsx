@@ -1,32 +1,18 @@
-import { Home } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 
 export default function NotFound() {
   return (
-    <div className="min-h-[calc(100vh-12rem)] flex flex-col">
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="flex flex-col items-center text-center max-w-md relative">
-          <h1 className="text-[200px] font-semibold font-mono bg-linear-to-b from-primary/30 to-secondary/10 text-transparent bg-clip-text absolute -top-40 left-1/2 -translate-x-1/2 mask-[linear-gradient(to_bottom,black,black_20%,transparent_80%)] tracking-tighter uppercase [-webkit-text-stroke:3px_var(--border)]">
-            404
-          </h1>
-
-          <h2 className="text-4xl tracking-tight font-semibold text-foreground mb-2">Page Not Found</h2>
-
-          <p className="text-muted-foreground mb-8 text-balance tracking-tight font-medium">
-            The page you&apos;re looking for doesn&apos;t exist or may have been moved.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link href="/">
-              <Button variant="outline" className="gap-2 cursor-pointer">
-                <Home className="h-4 w-4" />
-                Go to Home
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
+    <main className="mx-auto flex min-h-[70dvh] max-w-md flex-col items-center justify-center gap-4 px-6 text-center">
+      <p className="font-pixel text-[11px] uppercase tracking-[0.3em] text-game-pink">Error 404</p>
+      <h1 className="font-pixel text-5xl sm:text-6xl">Game over?</h1>
+      <p className="text-muted-foreground text-balance">
+        This level doesn&apos;t exist, or it was moved. Your progress is safe.
+      </p>
+      <Link
+        href="/"
+        className="lift mt-2 rounded-2xl bg-game-accent px-5 py-3 font-semibold text-game-accent-foreground shadow-[0_6px_0_0_color-mix(in_oklab,var(--game-accent)_55%,black)] active:shadow-none">
+        ▶ Continue from start
+      </Link>
+    </main>
   );
 }
