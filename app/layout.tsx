@@ -50,6 +50,7 @@ export const metadata: Metadata = {
     creator: '@rzknkbr',
     site: '@rzknkbr',
   },
+  verification: { google: 'RdPd_pSpuuGuy5Mm4GPO15wWtIms-5sj-46qT1JKpiY' },
   robots: {
     index: true,
     follow: true,
@@ -81,6 +82,8 @@ export default function RootLayout(props: RootLayoutProps) {
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: static inline script */}
         <script dangerouslySetInnerHTML={{ __html: SKIP_START }} />
+        {/* Analytics loads after idle; warming its beacon host keeps the first ping cheap. */}
+        <link rel="preconnect" href="https://gateway.umami.is" crossOrigin="anonymous" />
         <noscript>
           <style>
             {
@@ -95,7 +98,11 @@ export default function RootLayout(props: RootLayoutProps) {
           geist.variable,
           silkscreen.variable,
         )}>
-        <Script defer src="https://cloud.umami.is/script.js" data-website-id="19f914e0-2aba-42c7-bdb9-d73147572d3d" />
+        <Script
+          strategy="lazyOnload"
+          src="https://cloud.umami.is/script.js"
+          data-website-id="19f914e0-2aba-42c7-bdb9-d73147572d3d"
+        />
 
         <Providers>
           <Game />

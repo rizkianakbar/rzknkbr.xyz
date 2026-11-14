@@ -78,6 +78,38 @@ html[data-started] #start-screen {
   background: repeating-linear-gradient(to bottom, transparent 0 2px, rgb(0 0 0 / 0.06) 2px 4px);
 }
 
+/* Start-screen intro: CSS, so it paints before hydration (keeps LCP early). */
+.start-fade {
+  animation: start-fade 0.4s ease-out both;
+}
+
+.start-drop {
+  animation: start-drop 0.65s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+@keyframes start-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes start-drop {
+  from {
+    opacity: 0;
+    translate: 0 -80px;
+    rotate: -20deg;
+  }
+  55% {
+    opacity: 1;
+    translate: 0 10px;
+    rotate: 4deg;
+  }
+  78% {
+    translate: 0 -4px;
+    rotate: -1deg;
+  }
+}
+
 .start-title-glow {
   text-shadow:
     0 0 24px var(--game-accent-soft),
@@ -258,6 +290,9 @@ html[data-started] #start-screen {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .start-drop {
+    animation-name: start-fade;
+  }
   .press-start,
   .xp-shine::after,
   .loot-ring::before,

@@ -92,12 +92,11 @@ Key features:
 - `fx`: canvas effects
 - `sound`: audio synth
 - `scroll`: smooth scrolling
+- `seo`: metadata copy, structured data (JSON-LD) and `llms.txt`, all generated from `lib/resume.tsx`
 
 The rest map one-to-one to page sections.
 
 ## Engineering notes
-
-**Zero warnings.** Lint, types, tests, the build log and the dev-mode browser console are all expected to be silent. `scripts/check-tailwind.mjs` runs the same check as the Tailwind editor extension (canonical class names, no conflicting classes), so editor warnings also fail `bun run lint`.
 
 **Performance.**
 - **Background canvas:** draws only when something changes, so an idle page costs no frames.
@@ -105,6 +104,16 @@ The rest map one-to-one to page sections.
 - **Game state** is split into three contexts (actions, state, feed). Most components only read actions and never re-render from game updates.
 - **GitHub graph:** one shared tooltip instead of one per cell.
 - **Media:** images are served through `next/image` as AVIF/WebP. Project videos load only once their chest is opened, and pause when off-screen.
+
+**SEO.**
+- **Canonical host:** `https://www.rzknkbr.xyz`. The bare domain redirects there.
+- **Generated from the resume data:**
+  - title and description
+  - Open Graph and Twitter tags
+  - the share image (`app/opengraph-image.tsx`)
+  - JSON-LD: `ProfilePage`, `Person`, `WebSite` and the projects
+  - `sitemap.xml`, `robots.txt` (AI crawlers welcome), the manifest and `/llms.txt`
+- **Tests:** `features/seo/seo.test.ts` keeps the title and description within search-result lengths and the structured data valid.
 
 **Accessibility and resilience.**
 - **Reduced motion:** visitors with `prefers-reduced-motion` get the site without bounces, loops, smooth scrolling or particles.

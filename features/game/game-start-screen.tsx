@@ -24,6 +24,11 @@ export function StartScreen() {
   useEffect(() => {
     setHydrated(true);
     document.documentElement.style.overflow = 'hidden';
+    // A real modal: everything behind the start screen is out of the tab order and the accessibility tree.
+    const behind = [...document.body.children].filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && el.id !== 'start-screen' && el.tagName !== 'SCRIPT',
+    );
+    for (const el of behind) el.inert = true;
     const begin = performance.now();
     let raf = 0;
     const tick = (now: number) => {
@@ -35,6 +40,7 @@ export function StartScreen() {
     return () => {
       cancelAnimationFrame(raf);
       document.documentElement.style.overflow = '';
+      for (const el of behind) el.inert = false;
     };
   }, [reduce]);
 
@@ -75,41 +81,36 @@ export function StartScreen() {
       exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.6 }}
       transition={{ duration: 0.6, ease: [0.7, 0, 0.84, 0] }}>
       <div className="relative flex flex-col items-center gap-8 px-6 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="font-pixel text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted-foreground">
+        {/* The intro runs on CSS, so it plays from the first paint instead of waiting for hydration. */}
+        <p
+          style={{ animationDelay: '0.1s' }}
+          className="start-fade font-pixel text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted-foreground">
           rzknkbr.xyz presents
-        </motion.p>
+        </p>
 
         <p
           aria-hidden
           className="font-pixel text-4xl sm:text-6xl md:text-7xl leading-none flex flex-wrap justify-center">
           {TITLE.split('').map((ch, i) => (
-            <motion.span
+            <span
               // biome-ignore lint/suspicious/noArrayIndexKey: letters of a static string
               key={i}
-              className="inline-block start-title-glow"
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: -80, rotate: -20 }}
-              animate={{ opacity: 1, y: 0, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 500, damping: 14, delay: 0.15 + i * 0.045 }}>
-              {ch === ' ' ? ' ' : ch}
-            </motion.span>
+              style={{ animationDelay: `${0.15 + i * 0.045}s` }}
+              className="start-drop inline-block start-title-glow">
+              {ch === ' ' ? '\u00a0' : ch}
+            </span>
           ))}
         </p>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="font-pixel text-[10px] sm:text-xs uppercase tracking-widest text-game-accent-text">
-          Senior Product Engineer · Full-stack · Web3
-        </motion.p>
+        <p
+          style={{ animationDelay: '0.8s' }}
+          className="start-fade font-pixel text-[10px] sm:text-xs uppercase tracking-widest text-game-accent-text">
+          {resumeData.title} · Full-stack · Web3
+        </p>
 
-        <div className="h-24 flex flex-col items-center justify-center gap-4">
-          {ready ? (
-            <>
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-16 grid place-items-center">
+            {ready ? (
               <motion.button
                 ref={buttonRef}
                 type="button"
@@ -122,38 +123,35 @@ export function StartScreen() {
                 className="press-start font-pixel text-sm sm:text-base uppercase tracking-widest rounded-2xl border-2 border-game-accent bg-game-accent text-game-accent-foreground px-8 py-4 shadow-[0_0_0_6px_var(--game-accent-soft),0_10px_40px_-5px_var(--game-accent)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-foreground/40">
                 ▶ Press start
               </motion.button>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-xs text-muted-foreground">
-                🔊 Best with sound · Enter works too ·{' '}
-                <button
-                  type="button"
-                  onClick={() => go(true)}
-                  className="underline underline-offset-4 hover:text-foreground">
-                  start muted
-                </button>
-              </motion.p>
-            </>
-          ) : (
-            <div className="flex flex-col items-center gap-2" role="status" aria-live="polite">
-              <div className="flex gap-1">
-                {Array.from({ length: SEGMENTS }, (_, i) => (
-                  <div
-                    // biome-ignore lint/suspicious/noArrayIndexKey: fixed segments
-                    key={i}
-                    className={
-                      progress >= ((i + 1) * 100) / SEGMENTS ? 'h-4 w-2.5 bg-game-accent' : 'h-4 w-2.5 bg-muted'
-                    }
-                  />
-                ))}
+            ) : (
+              <div className="flex flex-col items-center gap-2" role="status" aria-live="polite">
+                <div className="flex gap-1">
+                  {Array.from({ length: SEGMENTS }, (_, i) => (
+                    <div
+                      // biome-ignore lint/suspicious/noArrayIndexKey: fixed segments
+                      key={i}
+                      className={
+                        progress >= ((i + 1) * 100) / SEGMENTS ? 'h-4 w-2.5 bg-game-accent' : 'h-4 w-2.5 bg-muted'
+                      }
+                    />
+                  ))}
+                </div>
+                <span className="font-pixel text-[10px] text-muted-foreground tabular-nums">
+                  LOADING WORLD… {progress}%
+                </span>
               </div>
-              <span className="font-pixel text-[10px] text-muted-foreground tabular-nums">
-                LOADING WORLD… {progress}%
-              </span>
-            </div>
-          )}
+            )}
+          </div>
+          {/* Shown from the first paint (not after loading), so it never becomes a late LCP. */}
+          <p style={{ animationDelay: '0.3s' }} className="start-fade text-xs text-muted-foreground">
+            🔊 Best with sound · Enter works too ·{' '}
+            <button
+              type="button"
+              onClick={() => go(true)}
+              className="underline underline-offset-4 hover:text-foreground">
+              start muted
+            </button>
+          </p>
         </div>
       </div>
     </motion.div>

@@ -7,13 +7,18 @@ export const alt = `${resumeData.name}, ${resumeData.title}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-const BG = '#16151f';
-const LIME = '#c6ff3d';
-const CYAN = '#4fe3ff';
-const PINK = '#ff5fae';
-const MUTED = '#a1a1b5';
+const BG = '#111019';
+const INK = '#f4f4f7';
+const MUTED = '#8b8a9c';
+const HAIRLINE = 'rgba(255,255,255,0.10)';
+const ACCENT = '#c6ff3d';
 
-const STATS = '800K monthly readers  ·  703 campaigns  ·  WAN-IFRA Award 2024';
+const STATS = [
+  { value: '800K', label: 'monthly visitors' },
+  { value: '703', label: 'gamified campaigns' },
+  { value: 'WAN-IFRA', label: 'Digital Media Award 2024' },
+];
+const DOMAIN = new URL(resumeData.url).host;
 
 /** Reads an image as a data URL, detecting the real type from its bytes (not its file extension). */
 async function imageDataUrl(publicPath: string) {
@@ -39,18 +44,28 @@ async function googleFont(family: string, weight: number, text: string) {
   }
 }
 
-/** The link-preview card (LinkedIn, X, WhatsApp, Slack, Google). Rendered at build time. */
+/**
+ * The link-preview card (LinkedIn, X, WhatsApp, Slack, Google), rendered at build time.
+ * Quiet on purpose: one accent, one typeface, lots of room. The site is the loud part.
+ */
 export default async function OpengraphImage() {
-  const kicker = `PLAYER 1 · ${resumeData.location.toUpperCase()}`;
-  const allText = `${kicker}${resumeData.name}${resumeData.title}${STATS}Full-stack · Web3 · ${resumeData.availability}www.rzknkbr.xyz`;
-  const [avatar, bold, regular] = await Promise.all([
+  const allText = [
+    DOMAIN,
+    resumeData.name,
+    resumeData.title,
+    resumeData.location,
+    resumeData.availability,
+    'Full-stack & Web3',
+    ...STATS.flatMap((s) => [s.value, s.label]),
+  ].join('');
+  const [avatar, bold, medium] = await Promise.all([
     imageDataUrl(resumeData.avatarUrl),
-    googleFont('Geist', 800, allText),
-    googleFont('Geist', 500, allText),
+    googleFont('Geist', 700, allText),
+    googleFont('Geist', 400, allText),
   ]);
   const fonts = [
-    ...(bold ? [{ name: 'Geist', data: bold, weight: 800 as const, style: 'normal' as const }] : []),
-    ...(regular ? [{ name: 'Geist', data: regular, weight: 500 as const, style: 'normal' as const }] : []),
+    ...(bold ? [{ name: 'Geist', data: bold, weight: 700 as const, style: 'normal' as const }] : []),
+    ...(medium ? [{ name: 'Geist', data: medium, weight: 400 as const, style: 'normal' as const }] : []),
   ];
 
   return new ImageResponse(
@@ -59,62 +74,79 @@ export default async function OpengraphImage() {
         width: '100%',
         height: '100%',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        padding: '64px 80px',
+        padding: '64px 72px',
         background: BG,
-        backgroundImage: 'radial-gradient(rgba(255,255,255,0.10) 1.5px, transparent 1.5px)',
-        backgroundSize: '28px 28px',
-        color: 'white',
+        // A faint accent light from the top right, so the card isn't flat black.
+        backgroundImage: 'radial-gradient(circle at 88% 0%, rgba(198,255,61,0.10), transparent 45%)',
+        color: INK,
         fontFamily: fonts.length ? 'Geist' : 'sans-serif',
-        fontWeight: 500,
+        fontWeight: 400,
       }}>
-      <div style={{ display: 'flex', flexDirection: 'column', width: 680 }}>
-        <div style={{ display: 'flex', fontSize: 22, letterSpacing: 5, color: LIME }}>{kicker}</div>
-        <div
-          style={{ display: 'flex', fontSize: 96, fontWeight: 800, lineHeight: 1, marginTop: 22, letterSpacing: -4 }}>
-          {resumeData.name}
-        </div>
-        <div style={{ display: 'flex', fontSize: 42, fontWeight: 800, color: LIME, marginTop: 20, letterSpacing: -1 }}>
-          {resumeData.title}
-        </div>
-        <div style={{ display: 'flex', fontSize: 28, color: MUTED, marginTop: 12 }}>
-          Full-stack · Web3 · {resumeData.availability}
-        </div>
+      {/* Top: domain and availability */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 22 }}>
+        <div style={{ display: 'flex', color: MUTED, letterSpacing: 1 }}>{DOMAIN}</div>
         <div
           style={{
             display: 'flex',
-            alignSelf: 'flex-start',
-            marginTop: 40,
-            padding: '12px 20px',
-            fontSize: 20,
-            whiteSpace: 'nowrap',
-            borderRadius: 16,
-            border: `2px solid ${PINK}`,
-            background: 'rgba(255,95,174,0.08)',
+            alignItems: 'center',
+            gap: 12,
+            padding: '8px 18px',
+            borderRadius: 999,
+            border: `1px solid ${HAIRLINE}`,
+            color: INK,
           }}>
-          {STATS}
+          <div style={{ display: 'flex', width: 10, height: 10, borderRadius: 999, background: ACCENT }} />
+          {resumeData.availability}
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
-        <div
-          style={{
-            display: 'flex',
-            padding: 6,
-            borderRadius: 36,
-            backgroundImage: `linear-gradient(135deg, ${LIME}, ${CYAN}, ${PINK})`,
-          }}>
-          {/* biome-ignore lint/performance/noImgElement: Satori (next/og) renders plain <img> only */}
-          <img
-            src={avatar}
-            alt=""
-            width={300}
-            height={340}
-            style={{ borderRadius: 30, objectFit: 'cover', objectPosition: 'top' }}
-          />
+      {/* Middle: who, and a face */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', fontSize: 84, fontWeight: 700, lineHeight: 1, letterSpacing: -3.5 }}>
+            {resumeData.name}
+          </div>
+          <div style={{ display: 'flex', fontSize: 38, color: MUTED, marginTop: 20, letterSpacing: -0.5 }}>
+            {resumeData.title}
+            <span style={{ color: ACCENT, margin: '0 14px' }}>/</span>
+            Full-stack & Web3
+          </div>
+          <div style={{ display: 'flex', fontSize: 24, color: MUTED, marginTop: 14 }}>{resumeData.location}</div>
         </div>
-        <div style={{ display: 'flex', fontSize: 24, color: MUTED, letterSpacing: 2 }}>www.rzknkbr.xyz</div>
+
+        {/* biome-ignore lint/performance/noImgElement: Satori (next/og) renders plain <img> only */}
+        <img
+          src={avatar}
+          alt=""
+          width={200}
+          height={240}
+          style={{
+            borderRadius: 28,
+            objectFit: 'cover',
+            objectPosition: 'top',
+            border: `1px solid ${HAIRLINE}`,
+          }}
+        />
+      </div>
+
+      {/* Bottom: proof, separated by a hairline */}
+      <div style={{ display: 'flex', borderTop: `1px solid ${HAIRLINE}`, paddingTop: 32 }}>
+        {STATS.map((stat, i) => (
+          <div
+            key={stat.value}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              paddingLeft: i === 0 ? 0 : 32,
+              borderLeft: i === 0 ? 'none' : `1px solid ${HAIRLINE}`,
+            }}>
+            <div style={{ display: 'flex', fontSize: 40, fontWeight: 700, letterSpacing: -1.5 }}>{stat.value}</div>
+            <div style={{ display: 'flex', fontSize: 20, color: MUTED, marginTop: 6 }}>{stat.label}</div>
+          </div>
+        ))}
       </div>
     </div>,
     { ...size, fonts },

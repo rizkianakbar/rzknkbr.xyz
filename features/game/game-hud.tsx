@@ -55,7 +55,6 @@ export function Hud() {
             type="button"
             data-sfx="open"
             onClick={openBoard}
-            aria-label={`Level ${info.level} of ${MAX_LEVEL}, ${xp} XP. Open quest board`}
             className={`${HUD_BUTTON} pl-1.5 pr-4 py-1.5 text-left`}>
             {/* Keyed on xp so the pulse replays on every gain without remounting the button (keeps focus). */}
             <motion.span
@@ -64,8 +63,7 @@ export function Hud() {
               transition={{ duration: 0.35 }}
               className="flex items-center gap-3">
               <span className="grid place-items-center size-9 rounded-xl bg-game-accent text-game-accent-foreground font-pixel text-[11px] leading-none">
-                <span>LV</span>
-                <span className="text-sm">{info.level}</span>
+                <span>LV</span> <span className="text-sm">{info.level}</span>
               </span>
               <span className="flex flex-col gap-1 min-w-0">
                 <span className="flex items-baseline justify-between gap-4 font-pixel text-[10px] uppercase tracking-wide whitespace-nowrap">
@@ -91,6 +89,8 @@ export function Hud() {
                 </span>
               </span>
             </motion.span>
+            {/* The visible text is the name (WCAG "label in name"); this only adds what the button does. */}
+            <span className="sr-only">. Open quest board</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -98,12 +98,13 @@ export function Hud() {
               type="button"
               data-sfx="open"
               onClick={openBoard}
-              className={`${HUD_BUTTON} relative flex items-center gap-2 h-12 px-3 font-pixel text-[11px]`}
-              aria-label={`Quest board: ${unlocked.length} of ${ACHIEVEMENTS.length} achievements unlocked`}>
+              className={`${HUD_BUTTON} relative flex items-center gap-2 h-12 px-3 font-pixel text-[11px]`}>
               <Trophy className="size-4 text-game-amber" aria-hidden />
+              <span className="sr-only">Quest board: </span>
               <span className="tabular-nums">
                 {unlocked.length}/{ACHIEVEMENTS.length}
               </span>
+              <span className="sr-only"> achievements unlocked</span>
               {!boardSeen && (
                 <span className="absolute -top-1 -right-1 flex size-3" aria-hidden>
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-game-amber opacity-75" />
