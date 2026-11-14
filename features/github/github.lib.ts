@@ -22,8 +22,8 @@ const REVALIDATE_SECONDS = 3600;
 
 const FETCH_TIMEOUT_MS = 12_000;
 
-/** Use with `revalidateTag()` if you add a webhook or cron to refresh sooner than ISR. */
-export const GITHUB_CONTRIBUTIONS_CACHE_TAG = 'github-contributions' as const;
+/** Cache tag for this fetch; pass it to `revalidateTag()` to refresh sooner than the hourly ISR. */
+const GITHUB_CONTRIBUTIONS_CACHE_TAG = 'github-contributions' as const;
 
 function isContributionDay(value: unknown): value is GitHubContributionDay {
   if (typeof value !== 'object' || value === null) return false;
@@ -128,7 +128,7 @@ export function buildContributionGrid(contributions: GitHubContributionDay[]): C
   return weeks;
 }
 
-export type MonthLabel = {
+type MonthLabel = {
   label: string;
   leftPercent: number;
 };
