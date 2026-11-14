@@ -1,29 +1,27 @@
 import { FileText, HomeIcon } from 'lucide-react';
-import { Docker } from '@/components/ui/svgs/docker';
-import { DrizzleORM } from '@/components/ui/svgs/drizzle';
-import { Expo } from '@/components/ui/svgs/expo';
-import { Golang } from '@/components/ui/svgs/golang';
-import { GraphQL } from '@/components/ui/svgs/graphql';
-import { Icons } from '@/components/ui/svgs/icons';
-import { Java } from '@/components/ui/svgs/java';
-import { JavaScript } from '@/components/ui/svgs/javascript';
-import { NextjsIconDark } from '@/components/ui/svgs/nextjsIconDark';
-import { Nodejs } from '@/components/ui/svgs/nodejs';
-import { Postgresql } from '@/components/ui/svgs/postgresql';
-import { Prisma } from '@/components/ui/svgs/prisma';
-import { ReactLight } from '@/components/ui/svgs/reactLight';
-import { Solidity } from '@/components/ui/svgs/solidity';
-import { TailwindCSS } from '@/components/ui/svgs/tailwindcss';
-import { Typescript } from '@/components/ui/svgs/typescript';
+import { Docker } from '@/components/icons/docker';
+import { DrizzleORM } from '@/components/icons/drizzle';
+import { Expo } from '@/components/icons/expo';
+import { Golang } from '@/components/icons/golang';
+import { GraphQL } from '@/components/icons/graphql';
+import { Icons } from '@/components/icons/icons';
+import { Java } from '@/components/icons/java';
+import { JavaScript } from '@/components/icons/javascript';
+import { NextjsIconDark } from '@/components/icons/nextjs';
+import { Nodejs } from '@/components/icons/nodejs';
+import { Postgresql } from '@/components/icons/postgresql';
+import { Prisma } from '@/components/icons/prisma';
+import { ReactLight } from '@/components/icons/react';
+import { Solidity } from '@/components/icons/solidity';
+import { TailwindCSS } from '@/components/icons/tailwindcss';
+import { Typescript } from '@/components/icons/typescript';
 
-export type Rarity = 'legendary' | 'epic' | 'rare';
-export type QuestStatus = 'done' | 'active';
-export type LootTone = 'red' | 'yellow' | 'purple';
+type Rarity = 'legendary' | 'epic' | 'rare';
+type QuestStatus = 'done' | 'active';
+type LootTone = 'red' | 'yellow' | 'purple';
 
 export const resumeData = {
   name: 'Rizkian Akbar',
-  fullName: 'Rizkian Akbar Juniansyah',
-  initials: 'RA',
   url: 'https://rzknkbr.xyz',
   location: 'Bandung, Indonesia',
   locationLink: 'https://www.google.com/maps/place/bandung',
@@ -198,7 +196,6 @@ export const resumeData = {
   work: [
     {
       company: 'Stealth Startup',
-      href: '#',
       location: 'Singapore (Remote)',
       title: 'Founding Engineer',
       logoUrl: '',
@@ -214,7 +211,6 @@ export const resumeData = {
     },
     {
       company: 'Avocado DAO',
-      href: 'https://www.linkedin.com/company/avocadodao/',
       location: 'Singapore (Remote)',
       title: 'Senior Frontend Engineer',
       logoUrl: '/avocadodao.png',
@@ -232,7 +228,6 @@ export const resumeData = {
     },
     {
       company: 'KBR Media',
-      href: 'https://www.linkedin.com/company/medialintasintinusantara/',
       location: 'Jakarta, Indonesia (Remote)',
       title: 'Full-Stack Developer',
       logoUrl: '/kbr.png',
@@ -249,7 +244,6 @@ export const resumeData = {
     },
     {
       company: 'Bountie Holdings',
-      href: 'https://www.linkedin.com/search/results/all/?keywords=Bountie',
       location: 'Singapore (Remote)',
       title: 'Frontend Engineer',
       logoUrl: '/bountie.png',
@@ -265,7 +259,6 @@ export const resumeData = {
     },
     {
       company: 'HappyFresh',
-      href: 'https://www.linkedin.com/company/happyfresh/',
       location: 'Jakarta, Indonesia (Remote)',
       title: 'Test Automation Engineer',
       logoUrl: '/happyfresh.png',
@@ -280,7 +273,6 @@ export const resumeData = {
     },
     {
       company: 'Next TI',
-      href: '#',
       location: 'Jakarta, Indonesia',
       title: 'Software Engineer',
       logoUrl: '/nextti.png',

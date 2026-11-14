@@ -26,7 +26,7 @@ export const PALETTE: Record<string, string> = {
   B: '#5a3820', // dark wood
 };
 
-export type PixelRun = { x: number; y: number; width: number; fill: string };
+type PixelRun = { x: number; y: number; width: number; fill: string };
 
 /**
  * Turns a sprite into horizontal runs of same-coloured pixels, so a 16×16 sprite renders as
