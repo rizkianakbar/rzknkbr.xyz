@@ -1,6 +1,5 @@
 'use client';
 
-import { useReducedMotion } from 'motion/react';
 import { Reveal } from '@/components/reveal';
 import { SectionHeader } from '@/components/section-header';
 import { useFinePointer } from '@/features/skills/skills.hooks';
@@ -17,9 +16,8 @@ const INSTRUMENTS: { label: string; flash: string; wave: OscillatorType }[] = [
 ];
 
 export function Skills() {
-  const reduce = useReducedMotion();
-  // Dragging would block page scrolling on touch screens, so only mouse users get it.
-  const draggable = useFinePointer() && !reduce;
+  // Free 2D dragging would hijack page scrolling on touch screens, so only mouse users get it.
+  const draggable = useFinePointer();
 
   return (
     <section id="skills" data-section="skills" className="mx-auto w-full max-w-5xl px-5 sm:px-6 scroll-mt-28">

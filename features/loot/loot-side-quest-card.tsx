@@ -11,7 +11,7 @@ type LootSideQuestCardProps = {
 };
 
 const LINK =
-  'inline-flex items-center gap-1.5 rounded-xl text-xs font-semibold px-3 py-2 hover:-translate-y-0.5 transition-all';
+  'inline-flex items-center gap-1.5 rounded-xl text-xs font-semibold px-3 py-2 pointer-coarse:py-3 hover:-translate-y-0.5 transition-all';
 
 export function LootSideQuestCard(props: LootSideQuestCardProps) {
   const { quest } = props;

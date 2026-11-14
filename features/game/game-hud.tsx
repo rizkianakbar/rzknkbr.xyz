@@ -172,14 +172,14 @@ function CoachMark(props: CoachMarkProps) {
           type="button"
           data-sfx="none"
           onClick={onOpenBoard}
-          className="rounded-xl bg-game-accent text-game-accent-foreground text-xs font-semibold px-3 py-2 hover:brightness-110 transition">
+          className="rounded-xl bg-game-accent text-game-accent-foreground text-xs font-semibold px-3 py-2 pointer-coarse:py-3 hover:brightness-110 transition">
           Show me the clues
         </button>
         <button
           type="button"
           data-sfx="close"
           onClick={onDismiss}
-          className="rounded-xl border border-border text-xs font-semibold px-3 py-2 hover:bg-muted transition-colors">
+          className="rounded-xl border border-border text-xs font-semibold px-3 py-2 pointer-coarse:py-3 hover:bg-muted transition-colors">
           I&apos;ll figure it out
         </button>
       </div>

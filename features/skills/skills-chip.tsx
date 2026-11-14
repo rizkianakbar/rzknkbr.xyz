@@ -17,6 +17,11 @@ type SkillsChipProps = {
   draggable: boolean;
 };
 
+/** Fast return with one small overshoot: the fling applied force, so a little bounce reads as physical. */
+const SNAP_BACK = { bounceStiffness: 600, bounceDamping: 24 };
+/** Reduced motion keeps the drag (the user makes that motion) but drops the bounce: critically damped. */
+const SNAP_BACK_CALM = { bounceStiffness: 600, bounceDamping: 50 };
+
 /** A skill you can play like a xylophone key, and fling around with the mouse. */
 export function SkillsChip(props: SkillsChipProps) {
   const { name, icon: Icon, note, wave, flash, draggable } = props;
@@ -41,15 +46,15 @@ export function SkillsChip(props: SkillsChipProps) {
         e.preventDefault();
         strike();
       }}
+      // Tracks the mouse 1:1 while held; on release a spring seeded with the fling velocity brings it home.
       drag={draggable}
       dragSnapToOrigin
-      dragElastic={0.5}
-      dragTransition={{ bounceStiffness: 500, bounceDamping: 12 }}
+      dragTransition={reduce ? SNAP_BACK_CALM : SNAP_BACK}
       whileHover={reduce ? undefined : { y: -4, scale: 1.05 }}
       whileTap={{ scale: 0.9 }}
-      whileDrag={{ scale: 1.15, rotate: -6, zIndex: 30 }}
+      whileDrag={reduce ? { zIndex: 30 } : { scale: 1.15, rotate: -6, zIndex: 30 }}
       className={cn(
-        'relative h-9 px-3.5 rounded-xl border border-border bg-background flex items-center gap-2 text-sm font-medium select-none overflow-hidden',
+        'relative h-9 pointer-coarse:h-11 px-3.5 rounded-xl border border-border bg-background flex items-center gap-2 text-sm font-medium select-none overflow-hidden',
         draggable && 'touch-none cursor-grab active:cursor-grabbing',
       )}>
       {hits > 0 && (

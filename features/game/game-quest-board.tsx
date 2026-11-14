@@ -70,7 +70,7 @@ export function QuestBoard(props: QuestBoardProps) {
             type="button"
             data-sfx="close"
             onClick={onClose}
-            className="grid place-items-center size-9 shrink-0 rounded-xl border border-border hover:bg-muted transition-colors"
+            className="grid place-items-center size-9 pointer-coarse:size-11 shrink-0 rounded-xl border border-border hover:bg-muted transition-colors"
             aria-label="Close">
             <X className="size-4" />
           </button>
