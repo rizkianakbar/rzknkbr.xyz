@@ -2,7 +2,7 @@ import type { JSX, SVGProps } from 'react';
 
 export function Solidity(props: SVGProps<SVGSVGElement>): JSX.Element {
   return (
-    <svg {...props} xmlSpace="preserve" viewBox="0 0 1300 1300" aria-label="Solidity">
+    <svg {...props} xmlSpace="preserve" viewBox="0 0 1300 1300" fill="currentColor" aria-label="Solidity">
       <path d="M773.772 253.308 643.068 485.61H381.842l130.614-232.302h261.316" opacity=".45" />
       <path d="M643.068 485.61h261.318L773.772 253.308H512.456L643.068 485.61z" opacity=".6" />
       <path d="M512.456 717.822 643.068 485.61 512.456 253.308 381.842 485.61l130.614 232.212z" opacity=".8" />
