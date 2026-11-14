@@ -1,9 +1,10 @@
 'use client';
 
 import { motion, useReducedMotion } from 'motion/react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Tilt } from '@/components/tilt';
-import { useGame } from '@/features/game/game-provider';
+import { useGameActions } from '@/features/game/game-provider';
 import { play } from '@/features/sound/sound.lib';
 import { resumeData } from '@/lib/resume';
 
@@ -18,7 +19,7 @@ const FLIP_HINT = 'text-center font-pixel text-[8px] uppercase tracking-widest t
 export function HeroPlayerCard(props: HeroPlayerCardProps) {
   const { show } = props;
   const [flipped, setFlipped] = useState(false);
-  const { award } = useGame();
+  const { award } = useGameActions();
   const reduce = useReducedMotion();
 
   const flip = (e: React.MouseEvent) => {
@@ -28,7 +29,7 @@ export function HeroPlayerCard(props: HeroPlayerCardProps) {
   };
 
   return (
-    <Tilt className="w-[min(100%,18rem)] sm:w-[min(100%,20rem)] rounded-[28px]" max={14}>
+    <Tilt className="w-[min(100%,18rem)] sm:w-[min(100%,20rem)] rounded-[28px]" max={14} glow="var(--game-accent)">
       <motion.button
         type="button"
         data-sfx="none"
@@ -46,14 +47,16 @@ export function HeroPlayerCard(props: HeroPlayerCardProps) {
               <span className="text-game-accent-text">LV 6</span>
             </div>
             <div className="relative mx-3 rounded-2xl overflow-hidden bg-linear-to-br from-game-violet/40 via-game-cyan/20 to-game-accent/30 aspect-square">
-              {/* biome-ignore lint/performance/noImgElement: tiny local avatar */}
-              <img
+              <Image
                 src={resumeData.avatarUrl}
                 alt={resumeData.name}
-                className="absolute inset-0 size-full object-cover"
+                fill
+                preload
+                sizes="320px"
+                className="object-cover"
                 draggable={false}
               />
-              <div className="holo absolute inset-0 animate-[holo_6s_ease-in-out_infinite]" aria-hidden />
+              <div className="holo" aria-hidden />
               <span className="absolute bottom-2 left-2 rounded-md bg-black/60 text-white font-pixel text-[9px] px-1.5 py-0.5">
                 ★ Product Engineer
               </span>
