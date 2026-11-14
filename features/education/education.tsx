@@ -1,4 +1,5 @@
 import { ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
 import { Reveal } from '@/components/reveal';
 import { resumeData } from '@/lib/resume';
 
@@ -17,11 +18,12 @@ export function Education() {
               href={edu.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-3 rounded-3xl border border-border bg-card/80 backdrop-blur p-4 h-full hover:border-foreground/25 hover:-translate-y-1 transition-all">
-              {/* biome-ignore lint/performance/noImgElement: small static logos */}
-              <img
+              className="group flex items-center gap-3 rounded-3xl border border-border bg-card/80 backdrop-blur p-4 h-full lift hover:border-foreground/25">
+              <Image
                 src={edu.logoUrl}
                 alt=""
+                width={40}
+                height={40}
                 className="size-10 rounded-2xl border border-border bg-white p-1 object-contain shrink-0"
               />
               <div className="min-w-0 flex-1">

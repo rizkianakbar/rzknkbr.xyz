@@ -2,7 +2,7 @@ import { BATTLE_LINES, BOSS_HP } from '@/features/contact/contact.constants';
 
 export type BattleMove = { id: string; damage: number; line: string };
 
-export type BattleState = {
+type BattleState = {
   hp: number;
   /** Moves that already landed: each move only deals damage once, so mashing one button won't win. */
   used: readonly string[];

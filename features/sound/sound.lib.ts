@@ -29,6 +29,7 @@ export type SoundName =
   | 'flip'
   | 'toggle'
   | 'secret'
+  | 'hit'
   | 'none';
 
 let ctx: AudioContext | null = null;
@@ -38,7 +39,11 @@ let lastHover = 0;
 let voices = 0;
 
 const MAX_VOICES = 24;
-const MASTER_VOLUME = 0.32;
+/**
+ * Loud enough at half system volume. The compressor below keeps stacked sounds (a chest cascade, a
+ * confetti burst) from clipping, so the gain can sit this high without distorting.
+ */
+const MASTER_VOLUME = 0.85;
 
 /** Pentatonic scale (C major pentatonic across 3 octaves): anything you play sounds pleasant. */
 const PENTATONIC = [
@@ -51,10 +56,22 @@ export function unlockAudio(): void {
     const Ctor =
       window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctor) return;
-    ctx = new Ctor();
+    try {
+      ctx = new Ctor();
+    } catch {
+      return; // Audio unavailable (e.g. blocked by the browser): the site works silently.
+    }
     master = ctx.createGain();
     master.gain.value = muted ? 0 : MASTER_VOLUME;
-    master.connect(ctx.destination);
+    // Compressor-limiter: lifts the quiet synth tones and catches peaks, so it sounds fuller and louder.
+    const limiter = ctx.createDynamicsCompressor();
+    limiter.threshold.value = -20;
+    limiter.knee.value = 10;
+    limiter.ratio.value = 8;
+    limiter.attack.value = 0.002;
+    limiter.release.value = 0.12;
+    master.connect(limiter);
+    limiter.connect(ctx.destination);
   }
   if (ctx.state === 'suspended') void ctx.resume();
 }
@@ -62,10 +79,6 @@ export function unlockAudio(): void {
 export function setMuted(value: boolean): void {
   muted = value;
   if (ctx && master) master.gain.setTargetAtTime(value ? 0 : MASTER_VOLUME, ctx.currentTime, 0.02);
-}
-
-export function isMuted(): boolean {
-  return muted;
 }
 
 function tone(opts: ToneOptions): void {
@@ -163,6 +176,10 @@ export function play(name: SoundName): void {
     case 'toggle':
       tone({ freq: 520, dur: 0.05, type: 'square', vol: 0.1 });
       tone({ freq: 780, dur: 0.08, type: 'square', vol: 0.1, delay: 0.05 });
+      break;
+    case 'hit':
+      noise(0.12, 2400, 300, 0.32);
+      tone({ freq: 220, to: 70, dur: 0.18, type: 'square', vol: 0.16 });
       break;
     case 'whoosh':
       noise(0.35, 300, 4000, 0.18);

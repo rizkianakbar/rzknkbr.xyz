@@ -6,7 +6,7 @@ export type BurstOptions = {
   colors?: string[];
 };
 
-export type FxRenderer = {
+type FxRenderer = {
   ripple: (x: number, y: number, strength?: number) => void;
   burst: (x: number, y: number, opts?: BurstOptions) => void;
   confetti: (count?: number) => void;

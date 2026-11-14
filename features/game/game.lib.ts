@@ -1,6 +1,6 @@
 import { ACHIEVEMENTS, type AchievementId, LEVELS } from '@/features/game/game.constants';
 
-export type LevelInfo = {
+type LevelInfo = {
   level: number;
   title: string;
   /** XP where the current level starts. */
@@ -26,7 +26,7 @@ export function levelProgress(xp: number): number {
   return next === null ? 1 : (xp - current) / (next - current);
 }
 
-export type Progress = {
+type Progress = {
   xp: number;
   unlocked: AchievementId[];
   muted: boolean;

@@ -2,10 +2,11 @@
 
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Reveal } from '@/components/reveal';
 import { SectionHeader } from '@/components/section-header';
-import { useGame } from '@/features/game/game-provider';
+import { useGameActions } from '@/features/game/game-provider';
 import { play } from '@/features/sound/sound.lib';
 import { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
@@ -58,7 +59,7 @@ type QuestEntryProps = {
 
 function QuestEntry(props: QuestEntryProps) {
   const { work, level, open, onToggle } = props;
-  const { track } = useGame();
+  const { track } = useGameActions();
   const reduce = useReducedMotion();
   const active = work.end === 'Present';
   const id = `quest-${work.company.replace(/\s+/g, '-').toLowerCase()}`;
@@ -181,10 +182,11 @@ function CompanyLogo(props: CompanyLogoProps) {
     );
   }
   return (
-    // biome-ignore lint/performance/noImgElement: small static logos
-    <img
+    <Image
       src={src}
       alt=""
+      width={40}
+      height={40}
       onError={() => setError(true)}
       className="size-10 rounded-2xl border border-border bg-white p-1 object-contain shrink-0"
       draggable={false}

@@ -2,7 +2,7 @@
 
 import { ArrowDown, FileText, MapPin, Sparkles } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
-import { useGame } from '@/features/game/game-provider';
+import { useGameState } from '@/features/game/game-provider';
 import { HeroLetter } from '@/features/hero/hero-letter';
 import { HeroPlayerCard } from '@/features/hero/hero-player-card';
 import { HeroTypewriter } from '@/features/hero/hero-typewriter';
@@ -12,10 +12,10 @@ const [FIRST, LAST] = resumeData.name.toUpperCase().split(' ');
 
 const PILL = 'inline-flex items-center rounded-full border border-border bg-card/70 backdrop-blur px-3 py-1 text-xs';
 const SECONDARY_BUTTON =
-  'inline-flex items-center gap-2 rounded-2xl border-2 border-border bg-card/70 backdrop-blur font-semibold px-5 py-2.5 transition-colors';
+  'lift inline-flex items-center gap-2 rounded-2xl border-2 border-border bg-card/70 backdrop-blur font-semibold px-5 py-2.5';
 
 export function Hero() {
-  const { started } = useGame();
+  const { started } = useGameState();
   const reduce = useReducedMotion();
   // Hold the entrance until the start screen is gone, so the drop-in is actually seen.
   const show = started || !!reduce;
@@ -85,35 +85,26 @@ export function Hero() {
           </motion.p>
 
           <motion.div {...fadeIn(1.1)} data-reveal className="flex flex-wrap items-center gap-3">
-            <motion.a
+            <a
               href="#quests"
               data-sfx="whoosh"
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 rounded-2xl bg-game-accent text-game-accent-foreground font-semibold px-5 py-3 shadow-[0_6px_0_0_color-mix(in_oklab,var(--game-accent)_55%,black)] active:shadow-none active:translate-y-1.5 transition-shadow">
+              className="lift inline-flex items-center gap-2 rounded-2xl bg-game-accent text-game-accent-foreground font-semibold px-5 py-3 shadow-[0_6px_0_0_color-mix(in_oklab,var(--game-accent)_55%,black)] active:shadow-none">
               <ArrowDown className="size-4" aria-hidden />
               Start the quest
-            </motion.a>
-            <motion.a
-              href="#contact"
-              data-sfx="whoosh"
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              className={`${SECONDARY_BUTTON} hover:border-game-pink`}>
+            </a>
+            <a href="#contact" data-sfx="whoosh" className={`${SECONDARY_BUTTON} hover:border-game-pink`}>
               Send a party invite
-            </motion.a>
-            <motion.a
+            </a>
+            <a
               href={resumeData.cvUrl}
               target="_blank"
               rel="noopener noreferrer"
               data-sfx="coin"
               data-cv
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.95 }}
               className={`${SECONDARY_BUTTON} hover:border-game-amber`}>
               <FileText className="size-4 text-game-amber" aria-hidden />
               Resume
-            </motion.a>
+            </a>
           </motion.div>
 
           <motion.p
