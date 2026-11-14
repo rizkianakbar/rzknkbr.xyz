@@ -115,7 +115,7 @@ const FLASK: Sprite = [
   '................',
 ];
 
-export type TrophyId = (typeof resumeData.trophies)[number]['id'];
+type TrophyId = (typeof resumeData.trophies)[number]['id'];
 
 export type Tone = 'accent' | 'pink' | 'amber' | 'violet' | 'cyan';
 
