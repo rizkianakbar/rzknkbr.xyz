@@ -110,8 +110,8 @@ export function Hero() {
           <motion.p
             {...fadeIn(1.4)}
             data-reveal
-            className="font-pixel text-[10px] uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-            <Sparkles className="size-3 text-game-amber" aria-hidden />
+            className="font-pixel text-[10px] uppercase leading-relaxed tracking-widest text-muted-foreground flex items-start gap-2">
+            <Sparkles className="mt-0.5 size-3 shrink-0 text-game-amber" aria-hidden />
             Psst: poke the letters. Everything here does something.
           </motion.p>
         </div>

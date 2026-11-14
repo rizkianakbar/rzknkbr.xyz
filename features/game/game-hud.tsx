@@ -55,31 +55,33 @@ export function Hud() {
             type="button"
             data-sfx="open"
             onClick={openBoard}
-            className={`${HUD_BUTTON} pl-1.5 pr-4 py-1.5 text-left`}>
+            className={`${HUD_BUTTON} min-w-0 flex-1 sm:flex-none pl-1.5 pr-3 sm:pr-4 py-1.5 text-left`}>
             {/* Keyed on xp so the pulse replays on every gain without remounting the button (keeps focus). */}
             <motion.span
               key={xp}
               animate={{ scale: [1, 1.06, 1] }}
               transition={{ duration: 0.35 }}
-              className="flex items-center gap-3">
-              <span className="grid place-items-center size-9 rounded-xl bg-game-accent text-game-accent-foreground font-pixel text-[11px] leading-none">
+              className="flex items-center gap-2.5 sm:gap-3">
+              <span className="grid shrink-0 place-items-center size-9 rounded-xl bg-game-accent text-game-accent-foreground font-pixel text-[11px] leading-none">
                 <span>LV</span> <span className="text-sm">{info.level}</span>
               </span>
-              <span className="flex flex-col gap-1 min-w-0">
-                <span className="flex items-baseline justify-between gap-4 font-pixel text-[10px] uppercase tracking-wide whitespace-nowrap">
-                  <span>
+              <span className="flex flex-1 flex-col gap-1 min-w-0">
+                <span className="flex items-baseline justify-between gap-2 sm:gap-4 font-pixel text-[10px] uppercase tracking-normal sm:tracking-wide whitespace-nowrap">
+                  <span className="min-w-0 truncate">
                     {info.title}
                     <span className="hidden sm:inline text-muted-foreground">
                       {' '}
                       · {info.level}/{MAX_LEVEL}
                     </span>
                   </span>
-                  <span className="text-muted-foreground tabular-nums">
+                  <span className="shrink-0 text-muted-foreground tabular-nums">
                     {xp}
-                    {info.next !== null && `/${info.next}`} XP
+                    {info.next !== null && `/${info.next}`}
+                    {/* Dropped on phones so the rank name fits next to the numbers. */}
+                    <span className="hidden min-[400px]:inline"> XP</span>
                   </span>
                 </span>
-                <span className="block h-2 w-36 sm:w-48 rounded-full bg-muted overflow-hidden">
+                <span className="block h-2 w-full sm:w-48 rounded-full bg-muted overflow-hidden">
                   <motion.span
                     className="block h-full rounded-full bg-game-accent xp-shine"
                     initial={false}
@@ -93,12 +95,12 @@ export function Hud() {
             <span className="sr-only">. Open quest board</span>
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
               data-sfx="open"
               onClick={openBoard}
-              className={`${HUD_BUTTON} relative flex items-center gap-2 h-12 px-3 font-pixel text-[11px]`}>
+              className={`${HUD_BUTTON} relative flex items-center gap-2 h-12 px-2.5 sm:px-3 font-pixel text-[11px]`}>
               <Trophy className="size-4 text-game-amber" aria-hidden />
               <span className="sr-only">Quest board: </span>
               <span className="tabular-nums">

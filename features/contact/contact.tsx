@@ -15,7 +15,12 @@ export function Contact() {
         <ContactBattle />
       </Reveal>
       <p className="mt-10 text-center font-pixel text-[10px] uppercase tracking-widest text-muted-foreground">
-        Thanks for playing · Try ↑ ↑ ↓ ↓ ← → ← → B A
+        Thanks for playing
+        {/* The cheat code needs a keyboard, so phones only get the thanks. */}
+        <span className="pointer-coarse:hidden">
+          {' '}
+          · <span className="whitespace-nowrap">Try ↑ ↑ ↓ ↓ ← → ← → B A</span>
+        </span>
       </p>
     </section>
   );

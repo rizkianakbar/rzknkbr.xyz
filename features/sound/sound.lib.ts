@@ -1,6 +1,7 @@
 /**
  * Tiny Web Audio synth: every sound is generated on the fly, so there are no audio files to load.
- * Browsers only allow audio after a user gesture, so `unlockAudio()` must be called from one.
+ * Browsers only allow audio after a user gesture, so `unlockAudio()` must be called from one. On touch
+ * screens that means `touchend` or `click`: a touch `pointerdown` does not count as a gesture.
  */
 
 type Wave = OscillatorType;
@@ -50,9 +51,16 @@ const PENTATONIC = [
   261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25, 783.99, 880.0, 1046.5, 1174.66, 1318.51, 1567.98,
 ];
 
+/** Safari's Audio Session API (iOS 17+); not in TypeScript's DOM types yet. */
+type AudioSessionNavigator = Navigator & { audioSession?: { type: string } };
+
 export function unlockAudio(): void {
   if (typeof window === 'undefined') return;
   if (!ctx) {
+    // iOS treats Web Audio as "ambient" by default, so the ring/silent switch mutes the whole site.
+    // "playback" makes it behave like a video: audible on silent, and the 🔊 button still mutes it.
+    const session = (navigator as AudioSessionNavigator).audioSession;
+    if (session) session.type = 'playback';
     const Ctor =
       window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctor) return;
@@ -73,7 +81,8 @@ export function unlockAudio(): void {
     master.connect(limiter);
     limiter.connect(ctx.destination);
   }
-  if (ctx.state === 'suspended') void ctx.resume();
+  // iOS also parks the context as "interrupted" after a call or an app switch.
+  if (ctx.state !== 'running') void ctx.resume().catch(() => {});
 }
 
 export function setMuted(value: boolean): void {

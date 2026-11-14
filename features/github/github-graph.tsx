@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, type Variants } from 'motion/react';
-import { memo, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
   buildContributionGrid,
   type ContributionLevel,
@@ -49,6 +49,13 @@ export function GithubGraph(props: GithubGraphProps) {
   const monthLabels = useMemo(() => monthLabelsForWeeks(weeks), [weeks]);
   const [hover, setHover] = useState<Hover | null>(null);
   const frameRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // On phones the year scrolls sideways; start at the most recent weeks, like GitHub does.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, []);
 
   const cellFrom = (target: EventTarget) =>
     target instanceof HTMLElement ? target.closest<HTMLElement>('[data-date]') : null;
@@ -75,23 +82,31 @@ export function GithubGraph(props: GithubGraphProps) {
     <div
       ref={frameRef}
       className="relative w-full rounded-3xl border border-border bg-card/80 backdrop-blur p-4 sm:p-6">
-      <div className="relative text-xs text-muted-foreground mb-2 h-4 w-full">
-        {monthLabels.map((m) => (
-          <span
-            key={`${m.label}-${m.leftPercent}`}
-            className="absolute whitespace-nowrap"
-            style={{ left: `${m.leftPercent}%` }}>
-            {m.label}
-          </span>
-        ))}
-      </div>
-
+      {/* Phones get a scrollable year at a readable cell size instead of 53 squeezed columns. */}
       <div
-        data-sfx="none"
-        onPointerOver={onPointerOver}
-        onPointerLeave={() => setHover(null)}
-        onPointerDown={onPointerDown}>
-        <GraphGrid weeks={weeks} />
+        ref={scrollRef}
+        onScroll={() => setHover(null)}
+        className="-mx-4 overflow-x-auto overscroll-x-contain px-4 py-1 sm:mx-0 sm:overflow-visible sm:px-0 sm:py-0">
+        <div className="min-w-176 sm:min-w-0">
+          <div className="relative text-xs text-muted-foreground mb-2 h-4 w-full">
+            {monthLabels.map((m) => (
+              <span
+                key={`${m.label}-${m.leftPercent}`}
+                className="absolute whitespace-nowrap"
+                style={{ left: `${m.leftPercent}%` }}>
+                {m.label}
+              </span>
+            ))}
+          </div>
+
+          <div
+            data-sfx="none"
+            onPointerOver={onPointerOver}
+            onPointerLeave={() => setHover(null)}
+            onPointerDown={onPointerDown}>
+            <GraphGrid weeks={weeks} />
+          </div>
+        </div>
       </div>
 
       {hover && (

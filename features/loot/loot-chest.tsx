@@ -36,8 +36,8 @@ type LootChestProps = {
 };
 
 /**
- * A loot chest sitting on top of its item card. The card is always rendered underneath,
- * so it reserves its height (no layout shift on reveal) and its text stays in the page.
+ * A loot chest sitting on top of its item card. The card is always rendered underneath, so its text
+ * stays in the page and, from `sm` up, it reserves its height (no layout shift on reveal).
  * Memoized: opening one chest re-renders the grid, but the other five don't need to.
  */
 export const LootChest = memo(function LootChest(props: LootChestProps) {
@@ -78,7 +78,9 @@ export const LootChest = memo(function LootChest(props: LootChestProps) {
   const popping = requested && !reduce;
 
   return (
-    <div className="relative h-full">
+    // Phones show one chest per row, so a closed chest stays compact instead of reserving the whole
+    // card's height (a mostly empty box taller than the screen); it grows into the card as it opens.
+    <div className={cn('relative h-full', !revealed && 'max-sm:h-72 max-sm:overflow-hidden')}>
       <LootItemCard project={project} index={index} revealed={revealed} />
 
       <AnimatePresence>
@@ -142,7 +144,14 @@ export const LootChest = memo(function LootChest(props: LootChestProps) {
               </span>
               <span className="font-bold">{project.title}</span>
               <span className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-foreground">
-                {requested ? 'Opening…' : '▶ Click to open'}
+                {requested ? (
+                  'Opening…'
+                ) : (
+                  <>
+                    ▶ <span className="pointer-coarse:hidden">Click</span>
+                    <span className="hidden pointer-coarse:inline">Tap</span> to open
+                  </>
+                )}
               </span>
             </span>
           </motion.button>

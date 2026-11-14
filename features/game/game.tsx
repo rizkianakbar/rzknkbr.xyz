@@ -23,6 +23,8 @@ const KONAMI = [
   'a',
 ];
 
+const UNLOCK_EVENTS = ['touchend', 'click', 'keydown'] as const;
+
 /** Elements that count as "interactive" for sounds. `data-sfx` picks the sound; `data-sfx="none"` plays its own. */
 const INTERACTIVE = 'a, button, [role="button"], summary, [data-sfx]';
 
@@ -59,9 +61,12 @@ export function Game() {
     };
     document.addEventListener('pointerdown', down, { capture: true });
     document.addEventListener('pointerover', over, { passive: true });
+    // A touch pointerdown isn't a user gesture, so phones only unlock audio on touchend/click.
+    for (const type of UNLOCK_EVENTS) document.addEventListener(type, unlockAudio, { capture: true, passive: true });
     return () => {
       document.removeEventListener('pointerdown', down, { capture: true });
       document.removeEventListener('pointerover', over);
+      for (const type of UNLOCK_EVENTS) document.removeEventListener(type, unlockAudio, { capture: true });
     };
   }, []);
 

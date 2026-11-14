@@ -264,17 +264,18 @@ export function ContactBattle() {
             <>
               <span
                 aria-hidden
-                className="text-game-pink opacity-0 transition-opacity group-hover/move:opacity-100 group-focus-visible/move:opacity-100">
+                className="hidden text-game-pink opacity-0 transition-opacity sm:inline group-hover/move:opacity-100 group-focus-visible/move:opacity-100">
                 ▶
               </span>
-              <span className="flex-1 truncate">{move.label}</span>
+              <span className="sm:flex-1 sm:truncate">{move.label}</span>
               <span className={cn('font-pixel text-[9px]', used ? 'text-game-accent-text' : 'text-muted-foreground')}>
                 {used ? '✓' : `${move.damage} DMG`}
               </span>
             </>
           );
           const className = cn(
-            'group/move lift flex w-full items-center gap-2 rounded-xl border-2 px-3 py-3 pointer-coarse:py-3.5 text-left text-sm font-semibold focus-visible:outline-none',
+            // Phones stack the damage under the name, so two columns never truncate it.
+            'group/move lift flex h-full w-full flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2 rounded-xl border-2 px-3 py-3 pointer-coarse:py-3.5 text-left text-sm font-semibold focus-visible:outline-none',
             used
               ? 'border-border/60 bg-muted/30 text-muted-foreground'
               : 'border-border bg-background hover:border-game-pink focus-visible:border-game-pink',

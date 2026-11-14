@@ -12,7 +12,8 @@ export function Toasts() {
   return (
     <div
       aria-live="polite"
-      className="fixed top-20 right-3 left-3 sm:left-auto z-50 flex flex-col items-end gap-2 pointer-events-none">
+      // On phones the top is taken by the HUD and its how-to-play hint, so toasts stack just above the dock.
+      className="fixed max-sm:bottom-[calc(5.5rem+env(safe-area-inset-bottom))] sm:top-20 right-3 left-3 sm:left-auto z-50 flex flex-col items-end gap-2 pointer-events-none">
       <AnimatePresence initial={false}>
         {toasts.map((toast) => (
           <ToastCard key={toast.id} toast={toast} onDismiss={() => dismissToast(toast.id)} />
