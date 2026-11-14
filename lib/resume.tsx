@@ -22,8 +22,11 @@ type LootTone = 'red' | 'yellow' | 'purple';
 
 export const resumeData = {
   name: 'Rizkian Akbar',
-  /** Other names people search for: full legal name and handle. Used in structured data. */
-  alternateNames: ['Rizkian Akbar Juniansyah', 'rzknkbr'],
+  /**
+   * Other names people search for: full legal name, nickname and handles. Used in metadata and structured
+   * data; the visible intro in `summary` names them too, since Google ranks on what the page shows.
+   */
+  alternateNames: ['Rizkian Akbar Juniansyah', 'Kian', 'rizkianakbar', 'rzknkbr'],
   // Canonical host: the apex domain redirects to www, so every absolute URL must use www.
   url: 'https://www.rzknkbr.xyz',
   location: 'Bandung, Indonesia',
@@ -34,6 +37,7 @@ export const resumeData = {
   description:
     'Product engineer with 6+ years shipping production systems across banking, media, esports and Web3. I take products from idea to deployed, end to end.',
   summary: [
+    "Hi, I'm Rizkian Akbar Juniansyah: Kian to friends, rizkianakbar on GitHub and LinkedIn. I'm a software engineer from Bandung who started in frontend and now builds full-stack and Web3 products end to end.",
     'It started in 2019 with a KEB Hana Bank scholarship. I was picked from nearly 3,000 applicants for an intensive coding bootcamp, and that was the spark.',
     'Since then I have shipped banking tools, test automation, an esports platform, Web3 products and a national news site. I joined Avocado DAO as a frontend engineer and grew into owning products end to end: backend, smart contracts, design and deployment. I also became the code-review quality gate for the whole product team.',
     'When the company restructured in 2025, the founder kept two engineers out of about 50 staff. I was one of them.',

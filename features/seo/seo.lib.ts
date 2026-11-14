@@ -6,12 +6,18 @@ const { url: SITE_URL, contact } = resumeData;
 export const SEO_TITLE = `${resumeData.name} · ${resumeData.title} (Full-Stack & Web3)`;
 
 /** ~150–160 chars, third person so it reads as a fact when quoted by search and AI answers. */
-export const SEO_DESCRIPTION = `${resumeData.name} is a ${resumeData.title} in ${resumeData.location}: 6+ years shipping full-stack and Web3 products, from award-winning media apps to B2B platforms.`;
+export const SEO_DESCRIPTION = `${resumeData.name} (rizkianakbar) is a ${resumeData.title} in ${resumeData.location}: 6+ years shipping full-stack and Web3 products, from award-winning apps to B2B.`;
 
 export const SEO_KEYWORDS = [
   resumeData.name,
   ...resumeData.alternateNames,
+  'Rizkian',
+  'Rizkian dev',
+  'Rizkian frontend',
+  'Rizkian Akbar developer',
   resumeData.title,
+  'Software Engineer',
+  'Frontend Developer',
   'Full-Stack Engineer',
   'Web3 Engineer',
   'Next.js Developer',
