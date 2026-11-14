@@ -2,8 +2,8 @@
 
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import { Icons } from '@/components/icons/icons';
 import { PixelArt } from '@/components/pixel-art';
-import { Icons } from '@/components/ui/svgs/icons';
 import { useGameActions } from '@/features/game/game-provider';
 import { CLINIC_SPRITE } from '@/features/loot/loot.constants';
 import { LootTechTags } from '@/features/loot/loot-tech-tags';

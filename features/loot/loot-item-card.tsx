@@ -49,7 +49,7 @@ export function LootItemCard(props: LootItemCardProps) {
       data-reveal
       inert={!revealed}
       aria-hidden={!revealed}
-      style={{ transformPerspective: 1000, '--ring': tone.ring } as React.CSSProperties}
+      style={{ transformPerspective: 1000, '--loot-tone': tone.ring } as React.CSSProperties}
       initial={false}
       animate={
         revealed
