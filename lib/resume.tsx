@@ -406,14 +406,14 @@ export const resumeData = {
     {
       title: 'Lantun',
       status: 'done' as QuestStatus,
-      reward: 'Under 40 kB · 12 reading aids',
-      tagline: 'Open-source read-aloud & accessibility widget',
-      href: 'https://www.npmjs.com/package/lantun',
+      reward: '~38 kB · 12 reading aids',
+      tagline: 'Turn any article into something people can listen to',
+      href: 'https://lantun.rzknkbr.xyz',
       repo: 'https://github.com/rizkianakbar/lantun',
       image: '/projects/lantun.jpg',
       description:
-        'One script tag adds read-aloud with live word highlighting plus 12 reading aids. On-device neural TTS, under 40 kB gzipped, CSP-safe.',
-      technologies: ['TypeScript', 'Web Components', 'Web Workers', 'Playwright'],
+        'One script tag adds read-aloud with sentence and word highlighting, plus 12 reading aids for low vision, dyslexia and ADHD. Lifelike voices run in the browser, no backend.',
+      technologies: ['TypeScript', 'Web Components', 'Web Workers', 'React'],
     },
     {
       title: 'Whitzard',
