@@ -15,7 +15,7 @@ import { play, setMuted as setAudioMuted, unlockAudio } from '@/features/sound/s
 
 type Point = { x: number; y: number };
 
-export type TrackEvent =
+type TrackEvent =
   | { kind: 'click' }
   | { kind: 'poke' }
   | { kind: 'note' }
