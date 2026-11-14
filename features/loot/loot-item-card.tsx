@@ -195,7 +195,7 @@ function OnScreenVideo(props: OnScreenVideoProps) {
       muted
       playsInline
       preload="none"
-      className="size-full object-cover object-top"
+      className="absolute inset-0 size-full object-cover object-top"
     />
   );
 }

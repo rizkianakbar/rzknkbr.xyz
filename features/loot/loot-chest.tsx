@@ -80,7 +80,7 @@ export const LootChest = memo(function LootChest(props: LootChestProps) {
   return (
     // Phones show one chest per row, so a closed chest stays compact instead of reserving the whole
     // card's height (a mostly empty box taller than the screen); it grows into the card as it opens.
-    <div className={cn('relative h-full', !revealed && 'max-sm:h-72 max-sm:overflow-hidden')}>
+    <div className={cn('relative h-full min-w-0', !revealed && 'max-sm:h-72 max-sm:overflow-hidden')}>
       <LootItemCard project={project} index={index} revealed={revealed} />
 
       <AnimatePresence>
