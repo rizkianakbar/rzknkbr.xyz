@@ -1,25 +1,5 @@
 import type { Sprite } from '@/lib/pixel-art';
 
-/** Clipboard with a medical cross: stands in for side quests that have no screenshot yet. */
-export const CLINIC_SPRITE: Sprite = [
-  '................',
-  '.....kkkkkk.....',
-  '..kkkkWWWWkkkk..',
-  '..kggkkkkkkggk..',
-  '..kgWWWWWWWWgk..',
-  '..kgWWWppWWWgk..',
-  '..kgWWWppWWWgk..',
-  '..kgWppppppWgk..',
-  '..kgWppppppWgk..',
-  '..kgWWWppWWWgk..',
-  '..kgWWWppWWWgk..',
-  '..kgWWWWWWWWgk..',
-  '..kgWccccccWgk..',
-  '..kgWWWWWWWWgk..',
-  '..kkkkkkkkkkkk..',
-  '................',
-];
-
 /**
  * Treasure chest, drawn as lid (rows 0–5) and base (rows 6–15) so the lid can fly off.
  * 'r'/'R' are placeholder trim colours, swapped per rarity by `chestSprites`.

@@ -434,8 +434,7 @@ export const resumeData = {
       tagline: 'Clinic management for Indonesian clinics',
       href: 'https://clinic.rzknkbr.xyz',
       repo: 'https://github.com/rizkianakbar/eClinic',
-      image: '',
-      caption: 'Front desk → Exam → Pharmacy → Cashier',
+      image: '/projects/eclinic.jpg',
       description:
         'Registration, queues, medical records, pharmacy stock by batch and expiry, cashier with QRIS and owner reports. Multi-tenant with row-level security.',
       technologies: ['Next.js 16', 'Supabase', 'TanStack', 'Playwright'],

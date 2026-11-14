@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CHEST, CLINIC_SPRITE, TONE } from '@/features/loot/loot.constants';
+import { CHEST, TONE } from '@/features/loot/loot.constants';
 import { chestSprites } from '@/features/loot/loot.lib';
 import { PALETTE, SPRITE_SIZE } from '@/lib/pixel-art';
 import { resumeData } from '@/lib/resume';
@@ -16,14 +16,7 @@ describe('loot data', () => {
     for (const quest of resumeData.sideQuests) {
       expect(['done', 'active']).toContain(quest.status);
       expect(quest.reward.length).toBeGreaterThan(0);
-    }
-  });
-
-  it('draws the clinic sprite as a 16×16 grid of palette colours', () => {
-    expect(CLINIC_SPRITE).toHaveLength(SPRITE_SIZE);
-    for (const row of CLINIC_SPRITE) {
-      expect(row).toHaveLength(SPRITE_SIZE);
-      for (const ch of row) expect(ch === '.' || ch in PALETTE).toBe(true);
+      expect(quest.image).toMatch(/^\/projects\/.+\.jpg$/);
     }
   });
 });

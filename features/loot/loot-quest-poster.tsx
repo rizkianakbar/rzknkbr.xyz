@@ -3,9 +3,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import { Icons } from '@/components/icons/icons';
-import { PixelArt } from '@/components/pixel-art';
 import { useGameActions } from '@/features/game/game-provider';
-import { CLINIC_SPRITE } from '@/features/loot/loot.constants';
 import { LootTechTags } from '@/features/loot/loot-tech-tags';
 import type { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
@@ -48,28 +46,14 @@ export function LootQuestPoster(props: LootQuestPosterProps) {
         </div>
 
         <div className="relative mt-3 aspect-video overflow-hidden rounded-xl border-2 border-border bg-linear-to-br from-game-cyan/20 via-game-violet/15 to-game-pink/20">
-          {quest.image ? (
-            <Image
-              src={quest.image}
-              alt={`${quest.title} screenshot`}
-              fill
-              sizes="(min-width: 1024px) 460px, (min-width: 640px) 45vw, 100vw"
-              draggable={false}
-              className="size-full object-cover object-top grayscale-35 transition-[filter,transform] duration-500 group-hover/poster:grayscale-0 group-hover/poster:scale-105"
-            />
-          ) : (
-            <div className="size-full flex flex-col items-center justify-center gap-3">
-              <PixelArt
-                sprite={CLINIC_SPRITE}
-                className="size-16 transition-transform duration-300 group-hover/poster:-rotate-6"
-              />
-              {'caption' in quest && (
-                <span className="font-pixel text-[9px] uppercase tracking-widest text-muted-foreground text-center px-4">
-                  {quest.caption}
-                </span>
-              )}
-            </div>
-          )}
+          <Image
+            src={quest.image}
+            alt={`${quest.title} screenshot`}
+            fill
+            sizes="(min-width: 1024px) 460px, (min-width: 640px) 45vw, 100vw"
+            draggable={false}
+            className="size-full object-cover object-top grayscale-35 transition-[filter,transform] duration-500 group-hover/poster:grayscale-0 group-hover/poster:scale-105"
+          />
           <span aria-hidden className="crt absolute inset-0 pointer-events-none" />
         </div>
 
