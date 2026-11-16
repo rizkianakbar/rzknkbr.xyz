@@ -6,7 +6,7 @@ export function Contact() {
   return (
     <section id="contact" data-section="contact" className="mx-auto w-full max-w-4xl px-5 sm:px-6 scroll-mt-28">
       <SectionHeader
-        index="07"
+        index="08"
         kicker="Final boss"
         title="Let's build something together"
         subtitle="Hiring, collaborating, or just want to say hi? Every move below reaches me. Pick your attack."

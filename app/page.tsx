@@ -7,6 +7,7 @@ import { Quests } from '@/features/quests/quests';
 import { homeJsonLd, serializeJsonLd } from '@/features/seo/seo.lib';
 import { Skills } from '@/features/skills/skills';
 import { Story } from '@/features/story/story';
+import { Testimonials } from '@/features/testimonials/testimonials';
 import { Trophies } from '@/features/trophies/trophies';
 
 export default function HomePage() {
@@ -27,6 +28,7 @@ export default function HomePage() {
       </div>
       <Loot />
       <Skills />
+      <Testimonials />
       <Contact />
     </main>
   );

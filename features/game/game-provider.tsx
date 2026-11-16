@@ -21,6 +21,7 @@ type TrackEvent =
   | { kind: 'note' }
   | { kind: 'quest'; key: string; total: number }
   | { kind: 'trophy'; key: string; total: number }
+  | { kind: 'testimonial'; key: string; total: number }
   | { kind: 'section'; key: string };
 
 export type Toast = {
@@ -214,6 +215,10 @@ export function GameProvider(props: GameProviderProps) {
         case 'trophy':
           rewardOnce(`trophy:${event.key}`, XP_REWARD.trophy, at);
           if (countSeen(seenRef.current, 'trophy') >= event.total) award('trophy-room', at);
+          break;
+        case 'testimonial':
+          rewardOnce(`testimonial:${event.key}`, XP_REWARD.testimonial, at);
+          if (countSeen(seenRef.current, 'testimonial') >= event.total) award('party-chat', at);
           break;
         case 'section': {
           rewardOnce(`section:${event.key}`, XP_REWARD.section);

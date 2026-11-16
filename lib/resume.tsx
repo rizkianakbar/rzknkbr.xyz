@@ -312,6 +312,46 @@ export const resumeData = {
       end: '2019',
     },
   ],
+  // Verbatim from LinkedIn recommendations.
+  testimonials: [
+    {
+      name: 'Edward Marco Moktar',
+      photo: '/testimonials/edward.jpg',
+      date: 'Jul 9, 2025',
+      role: 'Product Manager at Avocado DAO',
+      href: 'https://www.linkedin.com/in/edwardmoktar',
+      quote:
+        "As the product manager for our platform's analytics product, I had the pleasure of working closely with Kian, who was a key software engineer responsible for developing our analytics features as well as several other important product components. Throughout our collaboration, Kian demonstrated exceptional technical skill and a deep understanding of product requirements, seamlessly translating our vision into intuitive and reliable features. Kian was also highly responsive to feedback, quickly making adjustments based on inputs from testing and ensuring that our features met the highest standards before release. He was proactive in communicating with me and the rest of the product team, always ensuring that he understood the goals and priorities behind each feature. His attention to detail, strong sense of ownership, and ability to deliver high-quality work on schedule made him an invaluable partner in building out our analytics capabilities. I am fortunate to have worked with Kian, and I do not doubt that, given his abilities, he will be an invaluable asset to any company he wishes to ply his trade in.",
+    },
+    {
+      name: 'Alvin De Cruz',
+      photo: '/testimonials/alvin.jpg',
+      date: 'Jul 1, 2025',
+      role: 'Head of Engineering at Avocado DAO',
+      href: 'https://www.linkedin.com/in/alvindecruz',
+      quote:
+        'I had the opportunity of working with Rizkian, who was our frontend developer for both AvocadoDAO and Stiqy.io, along with his inclination of very good design skills. He brought to the team a mix of great technical skills, creativity, reliability to every feature that he laid his hands on. He was dependable as he could accomplish each feature to a high standard without any prompting needed by anyone else. He was a good team player and was a joy for everyone to work with. If anyone needs someone who delivers high-quality work all the time, Rizkian is a good fit for any team.',
+    },
+    {
+      name: 'Hafiz Yanuar',
+      photo: '/testimonials/hafiz.jpg',
+      date: 'Sep 15, 2021',
+      role: 'Software Engineer at Next TI',
+      href: 'https://www.linkedin.com/in/hafiz-yanuar-0b359b189',
+      quote:
+        'Me and Rizkian work at the same team at Next TI. He is a professional Frontend Engineer, Highly skilled in Frontend, especially ReactJS',
+    },
+    {
+      // Verbatim excerpts from the proof-of-employment letter (character paragraph first); signer's name and contact left out on purpose.
+      name: 'Avocado DAO',
+      photo: '/avocadodao.png',
+      date: 'Jul 3, 2025',
+      role: 'COO, Telos Labs · employment letter',
+      letterUrl: 'https://drive.google.com/file/d/1PUMuvySloX2D9oPQfhtFo4bDXXn6XFRI/view',
+      quote:
+        'Rizkian’s work was characterized by professionalism, strong work ethic, and reliability. He showed exceptional initiative – often volunteering for additional tasks once he had completed his own, in order to help the team meet sprint goals and deadlines. Critical bugs or urgent feature requests were handled promptly (even outside normal hours) by Rizkian to ensure minimal disruption to users. He took full ownership of his projects, seeing them through from design to deployment and diligently addressing any issues that arose. Collaborating seamlessly with cross-functional teams (including designers, product managers, backend engineers, and QA testers), Rizkian helped ensure that features were implemented to specification and that design intentions were faithfully realized. During his tenure, Rizkian made significant contributions to our product’s success. He led the implementation of numerous user-facing features and improvements on Stiqy. For example, he developed interactive social media task integrations (enabling campaigns with Twitter-based tasks and engagements) and built out the platform’s campaign management dashboards and admin interfaces. He also spearheaded a major UI/UX overhaul across both the end-user and admin portals in 2024, resulting in a more intuitive and polished user experience. He remained a top-performing and valued member of our engineering team through his last day. I strongly endorse Rizkian for any senior frontend development role. He leaves our organization having delivered substantial value, and I am confident he will bring the same drive, skill, and collaborative spirit to his next team – truly, he would be an asset to any technology company.',
+    },
+  ],
   projects: [
     {
       title: 'KBR Prime',

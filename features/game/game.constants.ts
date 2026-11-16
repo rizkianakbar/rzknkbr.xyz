@@ -75,6 +75,14 @@ export const ACHIEVEMENTS = [
     xp: 50,
   },
   {
+    id: 'party-chat',
+    title: 'Heard them out',
+    description: 'Talked to every party member.',
+    hint: 'The party has things to say about me.',
+    emoji: '💬',
+    xp: 40,
+  },
+  {
     id: 'trophy-room',
     title: 'Trophy polisher',
     description: 'Clicked every trophy.',
@@ -142,16 +150,26 @@ export const LEVELS = [
   { xp: 240, title: 'Adventurer' },
   { xp: 400, title: 'Veteran' },
   { xp: 600, title: 'Champion' },
-  { xp: 850, title: 'Legend' },
+  { xp: 950, title: 'Legend' },
 ] as const;
 
 export const MAX_LEVEL = LEVELS.length;
 
 /** Every element with `data-section` must use one of these keys. */
-export const SECTIONS = ['hero', 'trophies', 'story', 'github', 'quests', 'loot', 'skills', 'contact'] as const;
+export const SECTIONS = [
+  'hero',
+  'trophies',
+  'story',
+  'github',
+  'quests',
+  'loot',
+  'skills',
+  'testimonials',
+  'contact',
+] as const;
 
 /** Small, one-time XP for looking around. */
-export const XP_REWARD = { section: 10, quest: 15, trophy: 5 } as const;
+export const XP_REWARD = { section: 10, quest: 15, trophy: 5, testimonial: 10 } as const;
 
 /** Thresholds behind the counting achievements; keep in sync with their descriptions. */
 export const GOALS = { clicks: 75, pokes: 10, notes: 12, questsRead: 3, speedrunMs: 25_000 } as const;

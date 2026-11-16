@@ -72,7 +72,8 @@ describe('game balance', () => {
   const exploringXp =
     SECTIONS.length * XP_REWARD.section +
     resumeData.work.length * XP_REWARD.quest +
-    resumeData.trophies.length * XP_REWARD.trophy;
+    resumeData.trophies.length * XP_REWARD.trophy +
+    resumeData.testimonials.length * XP_REWARD.testimonial;
   const maxXp = achievementXp + exploringXp;
   const legendXp = LEVELS[LEVELS.length - 1].xp;
 
