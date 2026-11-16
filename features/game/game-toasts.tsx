@@ -59,6 +59,10 @@ function ToastCard(props: ToastCardProps) {
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={{ left: 0.1, right: 1 }}
       dragTransition={{ bounceStiffness: 600, bounceDamping: 32 }}
+      // A new press clears the flag, in case the last drag ended off the toast and sent no click.
+      onPointerDown={() => {
+        swiped.current = false;
+      }}
       onDragStart={() => {
         swiped.current = true;
       }}

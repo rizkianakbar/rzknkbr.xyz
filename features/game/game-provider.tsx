@@ -116,9 +116,11 @@ export function GameProvider(props: GameProviderProps) {
       setMuted(saved.muted);
       setAudioMuted(saved.muted);
     }
-    if (readStorage('session', STORAGE_KEYS.started)) {
+    const savedStart = readStorage('session', STORAGE_KEYS.started);
+    if (savedStart) {
       setStarted(true);
-      startedAt.current = Date.now();
+      // The real start time, so a reload doesn't restart the speedrun clock.
+      startedAt.current = Number(savedStart);
     }
     loaded.current = true;
   }, []);
@@ -227,10 +229,10 @@ export function GameProvider(props: GameProviderProps) {
 
   const start = useCallback(() => {
     unlockAudio();
-    writeStorage('session', STORAGE_KEYS.started, '1');
+    startedAt.current = Date.now();
+    writeStorage('session', STORAGE_KEYS.started, String(startedAt.current));
     document.documentElement.dataset.started = '1';
     setStarted(true);
-    startedAt.current = Date.now();
     play('start');
     window.setTimeout(() => award('press-start'), 900);
   }, [award]);

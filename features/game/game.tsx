@@ -34,7 +34,7 @@ export function Game() {
   const { track, award, notify } = useGameActions();
 
   // Every click makes a noise and a ripple.
-  const onPointerDown = useEffectEvent((e: PointerEvent) => {
+  const onPress = useEffectEvent((e: MouseEvent) => {
     unlockAudio();
     if (!started || e.button !== 0 || !(e.target instanceof Element)) return;
     const at = { x: e.clientX, y: e.clientY };
@@ -52,7 +52,14 @@ export function Game() {
 
   useEffect(() => {
     let lastHover: HTMLElement | null = null;
-    const down = (e: PointerEvent) => onPointerDown(e);
+    // Mouse reacts on press. Touch waits for the click: a scroll also fires pointerdown, but never click.
+    let lastPointer = 'mouse';
+    const down = (e: PointerEvent) => {
+      lastPointer = e.pointerType;
+      if (e.pointerType === 'mouse') onPress(e);
+    };
+    // detail 0 is a keyboard click, which never made a ripple.
+    const click = (e: MouseEvent) => lastPointer !== 'mouse' && e.detail > 0 && onPress(e);
     const over = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse' || !(e.target instanceof Element)) return;
       const el = e.target.closest<HTMLElement>(INTERACTIVE);
@@ -60,11 +67,13 @@ export function Game() {
       lastHover = el;
     };
     document.addEventListener('pointerdown', down, { capture: true });
+    document.addEventListener('click', click, { capture: true });
     document.addEventListener('pointerover', over, { passive: true });
     // A touch pointerdown isn't a user gesture, so phones only unlock audio on touchend/click.
     for (const type of UNLOCK_EVENTS) document.addEventListener(type, unlockAudio, { capture: true, passive: true });
     return () => {
       document.removeEventListener('pointerdown', down, { capture: true });
+      document.removeEventListener('click', click, { capture: true });
       document.removeEventListener('pointerover', over);
       for (const type of UNLOCK_EVENTS) document.removeEventListener(type, unlockAudio, { capture: true });
     };
@@ -104,7 +113,8 @@ export function Game() {
     let pos = 0;
     const onKey = (e: KeyboardEvent) => {
       const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-      pos = key === KONAMI[pos] ? pos + 1 : key === KONAMI[0] ? 1 : 0;
+      // A third ↑ keeps the last two, so ↑ ↑ ↑ ↓ ↓ … still counts.
+      pos = key === KONAMI[pos] ? pos + 1 : key === 'ArrowUp' ? (pos === 2 ? 2 : 1) : 0;
       if (pos === KONAMI.length) {
         pos = 0;
         onCheatCode();
