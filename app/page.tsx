@@ -15,7 +15,7 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD built from our own data; `<` is escaped
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homeJsonLd(new Date())) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homeJsonLd(new Date(process.env.BUILT_AT ?? Date.now()))) }}
       />
       <Hero />
       <Trophies />
