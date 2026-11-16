@@ -1,7 +1,8 @@
 'use client';
 
-import { ArrowDown, FileText, MapPin, Sparkles } from 'lucide-react';
+import { FileText, MapPin, Sparkles, Trophy } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
+import { OPEN_BOARD_EVENT } from '@/features/game/game.constants';
 import { useGameState } from '@/features/game/game-provider';
 import { HeroLetter } from '@/features/hero/hero-letter';
 import { HeroPlayerCard } from '@/features/hero/hero-player-card';
@@ -85,13 +86,14 @@ export function Hero() {
           </motion.p>
 
           <motion.div {...fadeIn(1.1)} data-reveal className="flex flex-wrap items-center gap-3">
-            <a
-              href="#quests"
-              data-sfx="whoosh"
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event(OPEN_BOARD_EVENT))}
+              data-sfx="open"
               className="lift inline-flex items-center gap-2 rounded-2xl bg-game-accent text-game-accent-foreground font-semibold px-5 py-3 shadow-[0_6px_0_0_color-mix(in_oklab,var(--game-accent)_55%,black)] active:shadow-none">
-              <ArrowDown className="size-4" aria-hidden />
+              <Trophy className="size-4" aria-hidden />
               Start the quest
-            </a>
+            </button>
             <a href="#contact" data-sfx="whoosh" className={`${SECONDARY_BUTTON} hover:border-game-pink`}>
               Send a party invite
             </a>

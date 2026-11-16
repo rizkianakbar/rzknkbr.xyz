@@ -174,6 +174,9 @@ export const XP_REWARD = { section: 10, quest: 15, trophy: 5, testimonial: 10 } 
 /** Thresholds behind the counting achievements; keep in sync with their descriptions. */
 export const GOALS = { clicks: 75, pokes: 10, notes: 12, questsRead: 3, speedrunMs: 25_000 } as const;
 
+/** Fired on window by anything that wants the quest board open (the HUD listens). */
+export const OPEN_BOARD_EVENT = 'rzk:open-board';
+
 export const STORAGE_KEYS = {
   progress: 'rzk-game-v1',
   started: 'rzk-started',

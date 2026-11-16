@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimatePresence } from 'motion/react';
+import dynamic from 'next/dynamic';
 import { useEffect, useEffectEvent } from 'react';
 import { fx } from '@/features/fx/fx.lib';
 import { FxCanvas } from '@/features/fx/fx-canvas';
@@ -9,6 +10,9 @@ import { useGameActions, useGameState } from '@/features/game/game-provider';
 import { StartScreen } from '@/features/game/game-start-screen';
 import { FloatingXpLayer, Toasts } from '@/features/game/game-toasts';
 import { play, type SoundName, unlockAudio } from '@/features/sound/sound.lib';
+
+// The site bot is pure fun: load it in its own chunk, only once the game has started.
+const SiteBot = dynamic(() => import('@/features/bot/site-bot').then((m) => m.SiteBot), { ssr: false });
 
 const KONAMI = [
   'ArrowUp',
@@ -130,6 +134,7 @@ export function Game() {
       <Hud />
       <Toasts />
       <FloatingXpLayer />
+      {started && <SiteBot />}
       <AnimatePresence>{!started && <StartScreen key="start" />}</AnimatePresence>
     </>
   );

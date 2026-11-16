@@ -2,8 +2,8 @@
 
 import { Trophy, Volume2, VolumeX } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { useEffect, useState } from 'react';
-import { ACHIEVEMENTS, MAX_LEVEL, STORAGE_KEYS } from '@/features/game/game.constants';
+import { useEffect, useEffectEvent, useState } from 'react';
+import { ACHIEVEMENTS, MAX_LEVEL, OPEN_BOARD_EVENT, STORAGE_KEYS } from '@/features/game/game.constants';
 import { levelFor, levelProgress, readStorage, writeStorage } from '@/features/game/game.lib';
 import { useGameActions, useGameState } from '@/features/game/game-provider';
 import { QuestBoard } from '@/features/game/game-quest-board';
@@ -42,6 +42,13 @@ export function Hud() {
     writeStorage('local', STORAGE_KEYS.boardSeen, '1');
     dismissCoach();
   };
+
+  const onOpenRequest = useEffectEvent(openBoard);
+  useEffect(() => {
+    const open = () => onOpenRequest();
+    window.addEventListener(OPEN_BOARD_EVENT, open);
+    return () => window.removeEventListener(OPEN_BOARD_EVENT, open);
+  }, []);
 
   return (
     <>

@@ -27,7 +27,7 @@ const BOT: Sprite = [
   '....kk....kk....',
 ];
 
-const LINES = ['Beep! Hi.', 'Boop.', "I'm the party bot.", 'Click Next for more.', 'Hey, that tickles!'];
+const BOT_LINES = ['Beep! Hi.', 'Boop.', "I'm the party bot.", 'Click Next for more.', 'Hey, that tickles!'];
 
 /** 16px sprite at 4×, or 3× in narrow boxes; whole multiples keep the pixels crisp. */
 const sizeFor = (width: number) => (width < 480 ? 48 : 64);
@@ -113,7 +113,7 @@ export function PartyBot() {
   const poke = (e: React.MouseEvent) => {
     e.stopPropagation(); // don't turn the dialogue page
     play('toggle');
-    setLine(said.current++ % LINES.length);
+    setLine(said.current++ % BOT_LINES.length);
     if (!reduce) void animate(scope.current, { y: [0, -16, 0], scaleY: [1, 1.1, 0.9, 1] }, { duration: 0.45 });
   };
 
@@ -143,7 +143,7 @@ export function PartyBot() {
                     'absolute bottom-12 whitespace-nowrap rounded-lg border-2 border-foreground/80 bg-card px-2 py-1 font-pixel text-[9px] uppercase tracking-wider',
                     bubbleLeft ? 'right-full mr-1 origin-bottom-right' : 'left-full ml-1 origin-bottom-left',
                   )}>
-                  {LINES[line]}
+                  {BOT_LINES[line]}
                 </motion.span>
               )}
             </AnimatePresence>
