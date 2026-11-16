@@ -22,7 +22,7 @@ export function HeroLetter(props: HeroLetterProps) {
   // Deterministic per letter, so server and client render the same starting tilt.
   const tilt = (index % 2 ? 1 : -1) * (12 + ((index * 7) % 18));
 
-  const poke = (e: React.PointerEvent) => {
+  const poke = (e: React.MouseEvent) => {
     playNote(index + 2, 'square');
     track({ kind: 'poke' }, { x: e.clientX, y: e.clientY });
     fx.burst(e.clientX, e.clientY, { count: 10, spread: 6 });
@@ -45,7 +45,8 @@ export function HeroLetter(props: HeroLetterProps) {
       animate={show ? { opacity: 1, y: 0, rotate: 0 } : { opacity: 0, y: -160, rotate: tilt }}
       transition={{ type: 'spring', stiffness: 420, damping: 13, delay: show ? 0.25 + index * 0.05 : 0 }}
       onPointerEnter={(e) => e.pointerType === 'mouse' && playNote(index + 2, 'sine')}
-      onPointerDown={poke}>
+      // Click, not pointerdown: on phones a scroll that starts on the name isn't a poke.
+      onClick={poke}>
       <span
         className="inline-block transition-[translate,rotate] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-safe:group-hover/letter:-translate-y-4 motion-safe:group-hover/letter:rotate-(--hover-tilt)"
         style={{ '--hover-tilt': `${tilt / 2}deg` } as React.CSSProperties}>
