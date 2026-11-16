@@ -73,7 +73,8 @@ export function GithubGraph(props: GithubGraphProps) {
     });
   };
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  // Click, not pointerdown: on phones a scroll that starts on the grid shouldn't play notes.
+  const onClick = (e: React.MouseEvent) => {
     const cell = cellFrom(e.target);
     if (cell) playNote(Number(cell.dataset.level) * 2 + (Number(cell.dataset.week) % 3), 'sine');
   };
@@ -99,11 +100,9 @@ export function GithubGraph(props: GithubGraphProps) {
             ))}
           </div>
 
-          <div
-            data-sfx="none"
-            onPointerOver={onPointerOver}
-            onPointerLeave={() => setHover(null)}
-            onPointerDown={onPointerDown}>
+          {/* biome-ignore lint/a11y/noStaticElementInteractions: decorative notes; the graph's data is in the tooltips and profile link */}
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: same: sound only, nothing a keyboard user misses */}
+          <div data-sfx="none" onPointerOver={onPointerOver} onPointerLeave={() => setHover(null)} onClick={onClick}>
             <GraphGrid weeks={weeks} />
           </div>
         </div>

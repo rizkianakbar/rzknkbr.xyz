@@ -67,6 +67,15 @@ function logFetchFailure(message: string, detail?: unknown): void {
   console.warn(`[github-contributions] ${message}`);
 }
 
+/**
+ * Build and dev render the fallback. An ISR rebuild throws instead, so Next.js keeps serving the
+ * last good page rather than caching the error text for an hour.
+ */
+function failed(): null {
+  if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.NODE_ENV === 'development') return null;
+  throw new Error('GitHub contributions unavailable');
+}
+
 function toDateKey(d: Date): string {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -180,21 +189,21 @@ export async function fetchGitHubContributions(username: string): Promise<GitHub
 
     if (!res.ok) {
       logFetchFailure(`HTTP ${res.status}`, url);
-      return null;
+      return failed();
     }
 
     const raw: unknown = await res.json();
     const parsed = parseContributionsResponse(raw);
     if (!parsed) {
       logFetchFailure('invalid response shape', raw);
-      return null;
+      return failed();
     }
 
     return parsed;
   } catch (err) {
     const isAbort = err instanceof Error && err.name === 'TimeoutError';
     logFetchFailure(isAbort ? `timeout after ${FETCH_TIMEOUT_MS}ms` : 'request failed', err);
-    return null;
+    return failed();
   }
 }
 
