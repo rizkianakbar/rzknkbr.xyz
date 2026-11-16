@@ -39,12 +39,8 @@ export const SkillsNode = memo(function SkillsNode(props: SkillsNodeProps) {
       type="button"
       data-sfx="none"
       aria-pressed={lit}
-      onPointerDown={(e) => strike({ x: e.clientX, y: e.clientY })}
-      onKeyDown={(e) => {
-        if (e.key !== 'Enter' && e.key !== ' ') return;
-        e.preventDefault();
-        strike();
-      }}
+      // Click, not pointerdown: on phones a scroll starting here would light the node. detail 0 is the keyboard.
+      onClick={(e) => strike(e.detail > 0 ? { x: e.clientX, y: e.clientY } : undefined)}
       initial={reduce ? false : { opacity: 0, x: -8 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-40px' }}
