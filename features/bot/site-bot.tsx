@@ -143,6 +143,15 @@ export function SiteBot() {
       el: null,
     });
     const resolve = (el: Element | null) => (el ? byEl.get(el) : floor());
+    // The card under the bot (or its jump target) is re-measured every frame: reveals and tilts move it, and a 300ms-old rect makes the bot judder.
+    const refresh = (el: Element | null) => {
+      const p = el && byEl.get(el);
+      if (!p) return;
+      const r = el.getBoundingClientRect();
+      p.left = r.left + window.scrollX;
+      p.right = r.right + window.scrollX;
+      p.top = r.top + window.scrollY;
+    };
 
     // Physics and brain state live here, not in React: they change every frame.
     const s = {
@@ -346,6 +355,8 @@ export function SiteBot() {
         scannedAt = now;
         rescan();
       }
+      refresh(s.on);
+      if (s.mode === 'jump') refresh(s.jump.to);
       const fl = floor();
       const viewTop = window.scrollY + HUD_TOP;
       const visible = plats.filter((p) => p.top > viewTop + size && p.top < fl.top - 8 && p.right - p.left > size * 2);
@@ -438,7 +449,8 @@ export function SiteBot() {
       const eyes = eyesRef.current;
       if (!root || !body || !eyes) return;
       const step = walking ? -Math.abs(Math.sin(now / 70)) * 3 : 0;
-      root.style.transform = `translate3d(${s.x - half - window.scrollX}px, ${s.y - size - window.scrollY + step}px, 0)`;
+      // Page coordinates in a page-anchored layer: the browser scrolls the bot with the content, no per-frame scroll compensation to lag behind.
+      root.style.transform = `translate3d(${s.x - half}px, ${s.y - size + step}px, 0)`;
       const airborne = s.mode !== 'ground';
       const recoil = now - s.recoilAt < 90 ? -3 : 0;
       const squash = airborne ? '0.92, 1.1' : now - s.landed < 120 ? '1.15, 0.82' : '1, 1';
@@ -485,6 +497,8 @@ export function SiteBot() {
 
       <div className="pointer-events-none fixed inset-0 z-35 overflow-hidden">
         <div ref={shotsRef} />
+      </div>
+      <div className="pointer-events-none absolute left-0 top-0 z-35">
         <div ref={rootRef} className="absolute top-0 left-0 will-change-transform">
           <AnimatePresence>
             {line && (
