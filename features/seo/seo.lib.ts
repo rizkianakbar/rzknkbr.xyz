@@ -3,7 +3,7 @@ import { resumeData } from '@/lib/resume';
 const { url: SITE_URL, contact } = resumeData;
 
 /** ~50–60 chars: name first (people search the name), then role and the two strongest keywords. */
-export const SEO_TITLE = `${resumeData.name} · ${resumeData.title} (Full-Stack & Web3)`;
+export const SEO_TITLE = `${resumeData.name} | ${resumeData.title} (Full-Stack & Web3)`;
 
 /** ~150–160 chars, third person so it reads as a fact when quoted by search and AI answers. */
 export const SEO_DESCRIPTION = `${resumeData.name} (rizkianakbar) is a ${resumeData.title} in ${resumeData.location}: 6+ years shipping full-stack and Web3 products, from award-winning apps to B2B.`;

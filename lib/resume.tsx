@@ -32,10 +32,10 @@ export const resumeData = {
   location: 'Bandung, Indonesia',
   locationLink: 'https://www.google.com/maps/place/bandung',
   availability: 'Open to remote & relocation',
-  title: 'Senior Product Engineer',
-  roles: ['Senior Product Engineer', 'Full-stack builder', 'Web3 tinkerer', 'Sole engineer, award-winning app'],
+  title: 'Senior Software Engineer',
+  roles: ['Senior Software Engineer', 'Full-stack builder', 'Web3 tinkerer', 'Sole engineer, award-winning app'],
   description:
-    'Product engineer with 6+ years shipping production systems across banking, media, esports and Web3. I take products from idea to deployed, end to end.',
+    'Software engineer with 6+ years shipping production systems across banking, media, esports and Web3. I take products from idea to deployed, end to end.',
   summary: [
     "Hi, I'm Rizkian Akbar Juniansyah: Kian to friends, rizkianakbar on GitHub and LinkedIn. I'm a software engineer from Bandung who started in frontend and now builds full-stack and Web3 products end to end.",
     'It started in 2019 with a KEB Hana Bank scholarship. I was picked from nearly 3,000 applicants for an intensive coding bootcamp, and that was the spark.',
