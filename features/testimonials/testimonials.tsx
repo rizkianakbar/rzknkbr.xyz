@@ -4,13 +4,11 @@ import { motion, useInView, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { Icons } from '@/components/icons/icons';
-import { PixelArt } from '@/components/pixel-art';
 import { SectionHeader } from '@/components/section-header';
 import { fx } from '@/features/fx/fx.lib';
 import { useGameActions } from '@/features/game/game-provider';
 import { play } from '@/features/sound/sound.lib';
 import { paginate } from '@/features/testimonials/testimonials.lib';
-import type { Sprite } from '@/lib/pixel-art';
 import { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 
@@ -58,35 +56,6 @@ const ALL_ROLES = PARTY.map((m) => `${m.role} · ${m.date}`);
 const STACK = 'col-start-1 row-start-1';
 
 const TYPE_MS = 18;
-
-// Faint camp scene at the foot of the dialogue box: the party's tent and campfire.
-const TENT: Sprite = [
-  ...Array(6).fill(''),
-  '.......k',
-  '......kvk',
-  '.....kvvVk',
-  '....kvvvVVk',
-  '...kvvvkVVVk',
-  '..kvvvkkkVVVk',
-  '.kvvvkkkkkVVVk',
-  'kvvvvkkkkkVVVVk',
-  'kkkkkkkkkkkkkkkk',
-];
-const CAMPFIRE: Sprite = [
-  ...Array(4).fill(''),
-  '.......y',
-  '......yy..y',
-  '......yyy.y',
-  '.....yeyy.yy',
-  '....yyeeyyyy',
-  '....yeeeeeyy',
-  '....yeewweey',
-  '.....yewwey',
-  '..bBkyyyyykBb',
-  '...bbBBBBBbb',
-  '..BbbbbbbbbbB',
-  '.gg.gggggg.gg',
-];
 
 // Always ask the optimizer for the 16px copy (even on retina), so upscaling it gives chunky pixels.
 const tiny = ({ src }: { src: string }) => `/_next/image?url=${encodeURIComponent(src)}&w=16&q=75`;
@@ -286,11 +255,11 @@ export function Testimonials() {
                 member.tone.shadow,
               )}>
               <div className="relative isolate flex flex-1 gap-6 overflow-hidden rounded-[1.1rem] border border-border p-5 pt-8 sm:px-6 sm:pb-5">
+                {/* Same neon floor as the contact battle arena: violet glow, pink grid fading in from the bottom. */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute right-4 bottom-12 -z-10 flex items-end gap-1 opacity-15 sm:right-8">
-                  <PixelArt sprite={TENT} className="size-20 sm:size-24" />
-                  <PixelArt sprite={CAMPFIRE} className="size-12 sm:size-16" />
+                  className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_100%,color-mix(in_oklab,var(--game-violet)_22%,transparent),transparent_65%)]">
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(transparent_95%,color-mix(in_oklab,var(--game-pink)_35%,transparent)_95%),linear-gradient(90deg,transparent_95%,color-mix(in_oklab,var(--game-pink)_35%,transparent)_95%)] bg-size-[28px_28px] opacity-40 mask-[linear-gradient(to_bottom,transparent,black)]" />
                 </div>
                 <div className="hidden lg:block size-20 shrink-0 rounded-2xl border border-border bg-background/60 p-1">
                   <Portrait src={member.photo} sharp />
@@ -341,7 +310,7 @@ export function Testimonials() {
                     </div>
                   </div>
 
-                  <div className="mt-auto flex items-center gap-3 pt-5">
+                  <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 pt-5">
                     <div className="flex gap-1.5" aria-hidden>
                       {member.pages.map((p, i) => (
                         <span
@@ -370,7 +339,7 @@ export function Testimonials() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="rounded-lg border border-border px-2 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground hover:border-foreground/30">
+                        className="shrink-0 whitespace-nowrap rounded-lg border border-border px-2 py-1.5 font-pixel text-[9px] uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground hover:border-foreground/30">
                         ✉ Read letter
                       </a>
                     )}
@@ -381,7 +350,7 @@ export function Testimonials() {
                         e.stopPropagation();
                         advance();
                       }}
-                      className="ml-auto inline-flex items-center gap-2 rounded-xl px-3 py-2 font-pixel text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-foreground/5">
+                      className="ml-auto inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 font-pixel text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-foreground/5">
                       {!done ? 'Skip' : lastPage ? 'Next member' : 'Next'}
                       <span
                         aria-hidden
