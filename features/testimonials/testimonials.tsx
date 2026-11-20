@@ -4,12 +4,13 @@ import { motion, useInView, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { Icons } from '@/components/icons/icons';
+import { PixelArt } from '@/components/pixel-art';
 import { SectionHeader } from '@/components/section-header';
 import { fx } from '@/features/fx/fx.lib';
 import { useGameActions } from '@/features/game/game-provider';
 import { play } from '@/features/sound/sound.lib';
-import { PartyBot } from '@/features/testimonials/party-bot';
 import { paginate } from '@/features/testimonials/testimonials.lib';
+import type { Sprite } from '@/lib/pixel-art';
 import { resumeData } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 
@@ -57,6 +58,35 @@ const ALL_ROLES = PARTY.map((m) => `${m.role} · ${m.date}`);
 const STACK = 'col-start-1 row-start-1';
 
 const TYPE_MS = 18;
+
+// Faint camp scene at the foot of the dialogue box: the party's tent and campfire.
+const TENT: Sprite = [
+  ...Array(6).fill(''),
+  '.......k',
+  '......kvk',
+  '.....kvvVk',
+  '....kvvvVVk',
+  '...kvvvkVVVk',
+  '..kvvvkkkVVVk',
+  '.kvvvkkkkkVVVk',
+  'kvvvvkkkkkVVVVk',
+  'kkkkkkkkkkkkkkkk',
+];
+const CAMPFIRE: Sprite = [
+  ...Array(4).fill(''),
+  '.......y',
+  '......yy..y',
+  '......yyy.y',
+  '.....yeyy.yy',
+  '....yyeeyyyy',
+  '....yeeeeeyy',
+  '....yeewweey',
+  '.....yewwey',
+  '..bBkyyyyykBb',
+  '...bbBBBBBbb',
+  '..BbbbbbbbbbB',
+  '.gg.gggggg.gg',
+];
 
 // Always ask the optimizer for the 16px copy (even on retina), so upscaling it gives chunky pixels.
 const tiny = ({ src }: { src: string }) => `/_next/image?url=${encodeURIComponent(src)}&w=16&q=75`;
@@ -255,7 +285,13 @@ export function Testimonials() {
                 'flex flex-1 flex-col cursor-pointer select-none rounded-3xl border-2 border-foreground/80 bg-card/95 backdrop-blur p-1.5 transition-shadow',
                 member.tone.shadow,
               )}>
-              <div className="flex flex-1 gap-6 rounded-[1.1rem] border border-border p-5 pt-8 sm:px-6 sm:pb-5">
+              <div className="relative isolate flex flex-1 gap-6 overflow-hidden rounded-[1.1rem] border border-border p-5 pt-8 sm:px-6 sm:pb-5">
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute right-4 bottom-12 -z-10 flex items-end gap-1 opacity-15 sm:right-8">
+                  <PixelArt sprite={TENT} className="size-20 sm:size-24" />
+                  <PixelArt sprite={CAMPFIRE} className="size-12 sm:size-16" />
+                </div>
                 <div className="hidden lg:block size-20 shrink-0 rounded-2xl border border-border bg-background/60 p-1">
                   <Portrait src={member.photo} sharp />
                 </div>
@@ -291,15 +327,17 @@ export function Testimonials() {
                     ))}
 
                     <div className={cn(STACK, 'flex flex-col')}>
+                      {/* The whole page is laid out from the start (untyped part invisible), so typed words never reflow. */}
                       <p aria-hidden>
                         {text.slice(0, shown)}
-
                         {!done && (
-                          <span className={cn('ml-0.5 inline-block h-[1em] w-2 -mb-[0.15em]', member.tone.bg)} />
+                          // Plain inline anchor + absolute bar: takes no width and adds no line-break point mid-word.
+                          <span className="relative">
+                            <span className={cn('absolute left-0.5 top-[0.1em] h-[1em] w-2', member.tone.bg)} />
+                          </span>
                         )}
+                        <span className="invisible">{text.slice(shown)}</span>
                       </p>
-
-                      <PartyBot />
                     </div>
                   </div>
 
