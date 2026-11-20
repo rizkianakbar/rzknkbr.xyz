@@ -9,7 +9,7 @@ const SOCIALS = Object.values(resumeData.contact.social).filter((social) => soci
 export function Navbar() {
   return (
     <nav aria-label="Quick links" className="pointer-events-none fixed inset-x-0 bottom-4 z-30">
-      <NavbarDock className="pointer-events-auto relative h-16 w-fit mx-auto flex items-end gap-2 rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-2 shadow-lg shadow-black/30">
+      <NavbarDock className="pointer-events-auto relative h-14.5 w-fit mx-auto flex items-end gap-2 rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-2 shadow-lg shadow-black/30">
         {resumeData.navbar.map((item, i) => {
           const isCv = item.href === resumeData.cvUrl;
           return (
